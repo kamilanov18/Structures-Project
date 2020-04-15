@@ -23,7 +23,10 @@ struct DATE {
 struct TRAIN {
 	DATE departTime;
 	DATE arriveTime;
-
+	int id;
+	string departFrom;
+	string arriveTo;
+	int seats;
 };
 
 struct LOGIN
@@ -32,15 +35,60 @@ struct LOGIN
 	string password;
 };
 
+int generateId(int& maxId)
+{
+	return maxId++;
+}
+
+void createTimetable(TRAIN* trains,int& count, int& maxId)
+{
+	//Depart time 
+	cout << "/==============================\\" << endl;
+	cout << "Please enter the departure date:"<<endl; 
+	cout << "Day: ";  cin >> trains[count].departTime.day;
+	cout << "month: "; cin >> trains[count].departTime.month;
+	cout << "year: "; cin >> trains[count].departTime.year;
+	cout << "Enter departure time:" << endl;
+	cout << "Hours: "; cin >> trains[count].departTime.time.hours;
+	cout << "Minutes: "; cin >> trains[count].departTime.time.minutes;
+	cout << endl;
+
+	//Arrive time
+	cout << "Please enter the arrival date: "<<endl;
+	cout << "Day: ";  cin >> trains[count].arriveTime.day;
+	cout << "month: "; cin >> trains[count].arriveTime.month;
+	cout << "year: "; cin >> trains[count].arriveTime.year;
+	cout << "Enter arrival time:" << endl;
+	cout << "Hours: "; cin >> trains[count].arriveTime.time.hours;
+	cout << "Minutes: "; cin >> trains[count].arriveTime.time.minutes;
+	cout << endl;
+
+	//Location data
+	cout << "Enter departure location: "; cin >> trains[count].departFrom;
+	cout << "Enter arrival location: "; cin >> trains[count].arriveTo;
+	cout << endl;
+
+	cout << "Enter number of seats: "; cin >> trains[count].seats;
+	cout << "\\================================/" << endl;
+	trains[count].id = generateId(maxId);
+	count++;
+}
+
+void displayTimetable(TRAIN* trains, int count)
+{
+
+}
+
+
 bool AdministratorDisplay()
 {
 	cout << "Welcome!" << endl;
 	cout << "Choose option: " << endl;
 	cout << "1. Create Train Timetable." << endl;
-	cout << "2. List Timetable." << endl;
+	cout << "2. View Timetable." << endl;
 	cout << "3. Delete Timetable." << endl;
 	cout << "4. Update Timetable." << endl;
-	cout << "5. Guest Reservation." << endl;
+	cout << "5. Guest Reservations." << endl;
 	cout << "6. Exit." << endl;
 
 	int option2;
@@ -185,15 +233,12 @@ bool MainMenu(LOGIN *login) // Creating our Mainmenu
 
 int main()
 {
-	TIME time[55];
-
-	DATE date[55];
-
-	TRAIN train[55];
-
+	TRAIN trains[55];
+	int count = 0;
+	int maxId = 0;
 	LOGIN administratorlogin[5];
 	LOGIN guestlogin[5];
-
+	
 	bool Cycler; // Declaring variable of bool type (for the while cycle)
 
 	//
@@ -202,5 +247,6 @@ int main()
 		Cycler = MainMenu(Promenliva structure);     // Variable (Cycler) take MainMenu value
 	} while (Cycler == true);
 	//
-
+	
+	
 }
