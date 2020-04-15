@@ -2,13 +2,27 @@
 #include <iostream>
 #include <fstream>
 
-
 using namespace std;
+
+struct TIME {
+    int m;
+    int h;
+};
+
+struct DATE {
+    int d;
+    int m;
+    int y;
+    TIME time;
+};
+
+struct TRAIN {
+    DATE departTime;
+    DATE arriveTime;
+
+};
 
 int main()
 {
-    ofstream web;
-    web.open("web.html");
-    int a = 1000;
-    web << "<html><body><p style=" << "'color:red'" << ">" << a << "<p><body>";
+   
 }
