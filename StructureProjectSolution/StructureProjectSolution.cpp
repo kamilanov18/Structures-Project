@@ -3,37 +3,13 @@
 #include <string>
 #include <conio.h>
 #include <fstream>
+#include "structures.h"
+#include "dataFunctions.h"
 
 using namespace std;
 
 bool CheckSystem; // Declaring a variable of bool type(For checking | true / false)
 
-struct TIME {
-	int minutes;
-	int hours;
-};
-
-struct DATE {
-	int day;
-	int month;
-	int year;
-	TIME time;
-};
-
-struct TRAIN {
-	DATE departTime;
-	DATE arriveTime;
-	int id;
-	string departFrom;
-	string arriveTo;
-	int seats;
-};
-
-struct LOGIN
-{
-	string username;
-	string password;
-};
 
 int generateId(int& maxId)
 {
@@ -82,47 +58,35 @@ void createTimetable(TRAIN* trains, int& count, int& maxId)
 	count++;
 }
 
-void displayTimetable(TRAIN* trains, int count) // Mislq che q napisah pravilno taka che da izbroi vsichki napisani i dobaveni -> count !
+void displayTimetable(TRAIN* trains, int count)
 {
 	for (int i = 0; i < count; i++)
 	{
+		cout << "|||=============!!!=============|||" << endl;
 		//Departure Time
-		cout << "/==================\\" << endl;
-		cout << "Departure date." << endl;
-		cout << "Day: ";  cout << trains[i].departTime.day;
-		cout << "month: "; cout << trains[i].departTime.month;
-		cout << "year: "; cout << trains[i].departTime.year;
-		cout << endl;
-
-		cout << "Departure time." << endl;
-		cout << "Hours: "; cout << trains[i].departTime.time.hours;
-		cout << "Minutes: "; cout << trains[i].departTime.time.minutes;
-		cout << "\\==================/" << endl;
+		cout << "/========================\\" << endl;
+		cout << "Departure date: " << trains[i].departTime.day << "." << trains[i].departTime.month << "." << trains[i].departTime.year << endl;
+		cout << "Departure time: " << trains[i].departTime.time.hours << ":" << trains[i].departTime.time.minutes << endl;
+		cout << "\\========================/" << endl;
 		cout << endl;
 
 
 		//Arrive Time
-		cout << "/==================\\" << endl;
-		cout << "Arrival date." << endl;
-		cout << "Day: ";  cin >> trains[i].arriveTime.day;
-		cout << "month: "; cin >> trains[i].arriveTime.month;
-		cout << "year: "; cin >> trains[i].arriveTime.year;
-		cout << endl;
-
-		cout << "Arrival time." << endl;
-		cout << "Hours: "; cin >> trains[i].arriveTime.time.hours;
-		cout << "Minutes: "; cin >> trains[i].arriveTime.time.minutes;
-		cout << "\\==================/" << endl;
+		cout << "/======================\\" << endl;
+		cout << "Arrival date: " << trains[i].arriveTime.day << "." << trains[i].arriveTime.month << "." << trains[i].arriveTime.year << endl;
+		cout << "Arrival time: " << trains[i].arriveTime.time.hours << ":" << trains[i].arriveTime.time.minutes << endl;
+		cout << "\\======================/" << endl;
 		cout << endl;
 
 
 		//Location data
-		cout << "/=================================\\" << endl;
-		cout << "Enter departure location: "; cin >> trains[i].departFrom;
-		cout << "Enter arrival location: "; cin >> trains[i].arriveTo;
-		cout << "Enter number of seats: "; cin >> trains[i].seats;
-		cout << "\\=================================/" << endl;
-
+		cout << "/============================\\" << endl;
+		cout << "Departure location: "; cout << trains[i].departFrom << endl;
+		cout << "Arrival location: "; cout << trains[i].arriveTo << endl;
+		cout << "Number of seats: "; cout << trains[i].seats << endl;
+		cout << "\\============================/" << endl;
+		cout << "|||=============!!!=============|||" << endl;
+		cout << endl;
 	}
 }
 
@@ -232,7 +196,7 @@ void AdministratorLogin(LOGIN* login, TRAIN* trains)
 
 void MakingReservation()
 {
-	//Tomorrow
+	//Tomorrow, again
 }
 
 void GuestLogin(LOGIN* login) // Guest make reservation registration !!!!!!!!!!!

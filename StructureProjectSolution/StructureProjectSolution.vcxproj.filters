@@ -18,12 +18,21 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="structures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dataFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StructureProjectSolution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dataFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
