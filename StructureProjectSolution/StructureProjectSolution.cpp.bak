@@ -1,3 +1,4 @@
+#include "pch.h"
 #include <iostream>
 #include <string>
 #include <conio.h>
@@ -8,6 +9,7 @@
 using namespace std;
 
 bool CheckSystem; // Declaring a variable of bool type(For checking | true / false)
+
 
 int generateId(int& maxId)
 {
@@ -36,79 +38,52 @@ int findElementByIdRESERVATION(RESERVATION* reservations, int count, int searchI
 	}
 }
 
-//|||=========================LOGIC LAYER=========================|||\\
-
-void createTimetable(TRAIN* trains, int& count, int& maxId, TRAIN newData)
+void createTimetable(TRAIN* trains, int& count, int& maxId)
 {
-	newData.id = generateId(maxId);
-	trains[count] = newData;
-	count++;
-}
-
-void updateTimetable(TRAIN* trains, int index, TRAIN newData)
-{
-	trains[index] = newData;
-}
-
-void deleteTimetable(TRAIN* trains, int& count, int searchID)
-{
-	for (int i = findElementByIdTRAIN(trains, count, searchID); i < count - 1; i++)
-	{
-		trains[i] = trains[i + 1];
-	}
-	count--;
-}
-
-//|||=========================LOGIC LAYER=========================|||\\
-
-
-
-//|||=========================PRESENTATION LAYER=========================|||\\
-
-void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
-{
-	TRAIN newData;
+	TRAIN NewData;
 
 	//Depart time 
 	cout << endl;
 	cout << "/==============================\\" << endl;
 	cout << "Please enter the departure date." << endl;
-	cout << "Day: ";  cin >> newData.departTime.day;
-	cout << "month: "; cin >> newData.departTime.month;
-	cout << "year: "; cin >> newData.departTime.year;
+	cout << "Day: ";  cin >> trains[count].departTime.day;
+	cout << "month: "; cin >> trains[count].departTime.month;
+	cout << "year: "; cin >> trains[count].departTime.year;
 	cout << endl;
 
 	cout << "Enter departure time." << endl;
-	cout << "Hours: "; cin >> newData.departTime.time.hours;
-	cout << "Minutes: "; cin >> newData.departTime.time.minutes;
+	cout << "Hours: "; cin >> trains[count].departTime.time.hours;
+	cout << "Minutes: "; cin >> trains[count].departTime.time.minutes;
 	cout << "\\===============================/" << endl;
 	cout << endl;
 
 	//Arrive time
 	cout << "/============================\\" << endl;
 	cout << "Please enter the arrival date." << endl;
-	cout << "Day: ";  cin >> newData.arriveTime.day;
-	cout << "month: "; cin >> newData.arriveTime.month;
-	cout << "year: "; cin >> newData.arriveTime.year;
+	cout << "Day: ";  cin >> trains[count].arriveTime.day;
+	cout << "month: "; cin >> trains[count].arriveTime.month;
+	cout << "year: "; cin >> trains[count].arriveTime.year;
 	cout << endl;
 
 	cout << "Enter arrival time." << endl;
-	cout << "Hours: "; cin >> newData.arriveTime.time.hours;
-	cout << "Minutes: "; cin >> newData.arriveTime.time.minutes;
+	cout << "Hours: "; cin >> trains[count].arriveTime.time.hours;
+	cout << "Minutes: "; cin >> trains[count].arriveTime.time.minutes;
 	cout << "\\============================/" << endl;
 	cout << endl;
 
 	//Location data
 	cout << "/=================================\\" << endl;
-	cout << "Enter departure location: "; cin >> newData.departFrom;
-	cout << "Enter arrival location: "; cin >> newData.arriveTo;
+	cout << "Enter departure location: "; cin >> trains[count].departFrom;
+	cout << "Enter arrival location: "; cin >> trains[count].arriveTo;
 	cout << endl;
 
-	cout << "Enter Train class: "; cin >> newData.trainclass;
-	cout << "Enter number of seats: "; cin >> newData.seats;
+	cout << "Enter Train class: "; cin >> trains[count].trainclass;
+	cout << "Enter number of seats: "; cin >> trains[count].seats;
 	cout << "\\=================================/" << endl;
 
-	createTimetable(trains, count, maxId, newData);
+	//Generating Train ID
+	trains[count].id = generateId(maxId);
+	count++;
 }
 
 void displayTimetable(TRAIN* trains, int count)
@@ -151,11 +126,24 @@ void displayTimetable(TRAIN* trains, int count)
 	}
 }
 
-void deleteTimetableMenu(TRAIN* trains, int& count)
+// TRAIN UPDATE
+
+void deleteTimetable(TRAIN* trains, int& count)
 {
 	int searchID;
-	cout << "Enter the ID of the train you want to delete: ";  cin >> searchID;
-	deleteTimetable(trains, count, searchID);
+	cout << "Enter the ID of the train - You want to delete." << endl;
+	cout << "ID: "; cin >> searchID;
+
+	for (int i = findElementByIdTRAIN(trains, count, searchID); i < count - 1; i++)
+	{
+		trains[i] = trains[i + 1];
+	}
+	count--;
+}
+
+void updateTimetable(TRAIN* trains, int index, TRAIN newData)
+{
+	trains[index] = newData;
 }
 
 void updateTimetableMenu(TRAIN* trains, int& count) // Change Retry (function) with Bool Variable !!!!
@@ -310,7 +298,7 @@ Retry1:
 
 }
 
-//|||=========================PRESENTATION LAYER=========================|||\\
+// Reservation Functions
 
 void makingReservation(RESERVATION* reservations, LOGIN* login, int count, int maxId)
 {
@@ -348,10 +336,8 @@ void updateReservation(RESERVATION* reservations, int& index, RESERVATION NewDat
 	reservations[index] = NewData;
 }
 
-void updateReservationMenu(RESERVATION* reservations, int& count)
+void updateReservationMenu(RESERVATION* reservations, int& index, int& count, RESERVATION NewData)
 {
-	RESERVATION NewData;
-
 	int searchID;
 
 	int index = findElementByIdRESERVATION(reservations, count, searchID);
@@ -431,14 +417,14 @@ void GuestLogin(LOGIN* login, RESERVATION* reservations, int& count, int& maxId)
 	count++;
 
 
-	//if (login->username._Equal == NULL && login->password._Equal == NULL) // Strange !!!!!!!!!!!!!!!!!!
-	//{
-	//	cout << "Try again!" << endl;
-	//	CheckSystem = false;
-	//}
-	//else
-	//	makingReservation(reservations, count, maxId); // Argument list !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//CheckSystem = true;
+	if (login->username._Equal == NULL && login->password._Equal == NULL) // Strange !!!!!!!!!!!!!!!!!!
+	{
+		cout << "Try again!" << endl;
+		CheckSystem = false;
+	}
+	else
+		makingReservation(reservations, count, maxId); // Argument list !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	CheckSystem = true;
 }
 
 void displayReservations(RESERVATION* reservations, LOGIN* login, int count)
@@ -477,7 +463,7 @@ bool AdministratorDisplay(TRAIN* trains, int& count, int& maxId, RESERVATION* re
 	switch (option2)
 	{
 	case 1:
-		createTimetableMenu(trains, count, maxId);
+		createTimetable(trains, count, maxId);
 		break; 
 
 	case 2:
@@ -485,7 +471,7 @@ bool AdministratorDisplay(TRAIN* trains, int& count, int& maxId, RESERVATION* re
 		break;
 
 	case 3:
-		deleteTimetableMenu(trains, count);
+		deleteTimetable(trains, count);
 		break;
 
 	case 4:
@@ -506,7 +492,7 @@ bool AdministratorDisplay(TRAIN* trains, int& count, int& maxId, RESERVATION* re
 	return true;
 }
 
-void AdministratorLogin(LOGIN* login, TRAIN* trains, int& count, int& maxId, RESERVATION* reservations)
+void AdministratorLogin(LOGIN* login, TRAIN* trains, int& count, int& maxId)
 {
 	cout << endl;
 	cout << "/=============================================================\\" << endl;
@@ -528,7 +514,7 @@ void AdministratorLogin(LOGIN* login, TRAIN* trains, int& count, int& maxId, RES
 	cout << "\\==============================================================/" << endl;
 	if (realPass == login->password)
 	{
-		AdministratorDisplay(trains, count, maxId, reservations,login);
+		AdministratorDisplay(trains, count, maxId);
 		CheckSystem = true;
 	}
 	else
@@ -576,7 +562,7 @@ bool GuestDisplay(TRAIN * trains, int& count, RESERVATION* reservations, LOGIN* 
 	return true;
 }
 
-bool MainMenu(LOGIN* login, TRAIN* trains, int count, int maxId,RESERVATION* reservations) 
+bool MainMenu(LOGIN* login, TRAIN* trains, int count, int maxId) 
 {
 	//
 	cout << "/====================\\" << endl;
@@ -594,11 +580,11 @@ bool MainMenu(LOGIN* login, TRAIN* trains, int count, int maxId,RESERVATION* res
 	switch (option)
 	{
 	case 1:
-		AdministratorLogin(login, trains, count, maxId, reservations);
+		AdministratorLogin(login, trains, count, maxId);
 		break; 
 
 	case 2: 
-		GuestLogin(login,reservations,count,maxId);
+		GuestLogin(login); 
 		break; 
 
 	case 3: 
@@ -633,17 +619,17 @@ int main()
 
 	loadData(trains, count);
 
-	createTimetableMenu(trains, count, maxId);
+	createTimetable(trains, count, maxId);
 
 	saveData(trains, count);
 
 	displayTimetable(trains, count);
 
-	AdministratorDisplay(trains, count, maxId,reservations,administratorlogin); 
+	AdministratorDisplay(trains, count, maxId); 
 
-	/*do
+	do
 	{
 		Cycler = MainMenu(Promenliva structure);     // Variable (Cycler) take MainMenu valuee
 	} while (Cycler == true);
-	*/
+
 }

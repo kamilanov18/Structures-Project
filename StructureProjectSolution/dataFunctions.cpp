@@ -11,7 +11,7 @@ using namespace std;
 int toInt(string a)
 {
     int sum = 0;
-    int dig[10000];
+    int dig[100];
     for (int i = 0; i < a.size(); i++)
     {
         dig[i] = (int)a[i] - 48;
@@ -42,6 +42,7 @@ void loadData(TRAIN* trains, int count)
     ifstream data;
     data.open("data.txt");
     string text;
+
     for (int i = 0; i < count; i++)
     {
         data >> text;
