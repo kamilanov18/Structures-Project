@@ -59,9 +59,28 @@ void deleteTimetable(TRAIN* trains, int& count, int searchID)
 	count--;
 }
 
+void makeReservation(RESERVATION* reservations, LOGIN* login, int count, int maxId, RESERVATION newData)
+{
+	newData.reservedId = generateId(maxId);
+	reservations[count] = newData;
+	count++;
+}
+
+void deleteReservation(RESERVATION* reservations, int& count, int searchID)
+{
+	for (int i = findElementByIdRESERVATION(reservations, count, searchID); i < count - 1; i++)
+	{
+		reservations[i] = reservations[i + 1];
+	}
+	count--;
+}
+
+void updateReservation(RESERVATION* reservations, int& index, RESERVATION NewData)
+{
+	reservations[index] = NewData;
+}
+
 //|||=========================LOGIC LAYER=========================|||\\
-
-
 
 //|||=========================PRESENTATION LAYER=========================|||\\
 
@@ -311,42 +330,25 @@ Retry1:
 
 }
 
-//|||=========================PRESENTATION LAYER=========================|||\\
-
-void makingReservation(RESERVATION* reservations, LOGIN* login, int count, int maxId)
+void makeReservationMenu(RESERVATION* reservations, LOGIN* login, int count, int maxId)
 {
-	RESERVATION NewData;
+	RESERVATION newData;
 
 	cout << "/====== RESERVATION DEPARTMENT ======\\" << endl;
-	cout << "Hello "; cout << login->username << "!" << endl;
-	cout << "Enter the Train ID: "; cin >> reservations[count].reservedTrainID;
-	cout << "Enter the number of seats: "; cin >> reservations[count].reservedSeats;
+	cout << "Hello "; cout << login[count].username << "!" << endl;
+	cout << "Enter the Train ID: "; cin >> newData.reservedTrainID;
+	cout << "Enter the number of seats: "; cin >> newData.reservedSeats;
 	cout << "\\====================================/" << endl;
 	cout << endl;
 
-	//Generating Reservation ID
-	reservations[count].reservedId = generateId(maxId);
-	count++;
+	makeReservation(reservations, login, count, maxId, newData);
 }
 
-// RESERVATION UPDATE
-
-void DeleteReservation(RESERVATION* reservations, int& count)
+void deleteReservationMenu(RESERVATION* reservations, int& count)
 {
 	int searchID;
-
-	cout << "Enter the ID of your reservation: "; cin >> searchID;
-
-	for (int i = findElementByIdRESERVATION(reservations, count, searchID); i < count - 1; i++)
-	{
-		reservations[i] = reservations[i + 1];
-	}
-	count--;
-}
-
-void updateReservation(RESERVATION* reservations, int& index, RESERVATION NewData)
-{
-	reservations[index] = NewData;
+	cout << "Enter the ID of the reservation you want to delete: "; cin >> searchID;
+	deleteReservation(reservations, count, searchID);
 }
 
 void updateReservationMenu(RESERVATION* reservations, int& count)
@@ -354,6 +356,7 @@ void updateReservationMenu(RESERVATION* reservations, int& count)
 	RESERVATION NewData;
 
 	int searchID;
+	cout << "Enter the ID of the train you want to update: "; cin >> searchID;
 
 	int index = findElementByIdRESERVATION(reservations, count, searchID);
 	NewData = reservations[index];
@@ -364,7 +367,7 @@ void updateReservationMenu(RESERVATION* reservations, int& count)
 	cout << "2. Number of seats." << endl;
 	cout << "3. Exit." << endl;
 	cout << "\\===========================/" << endl;
-
+Retry1:
 	int option4;
 	cin >> option4;
 
@@ -382,11 +385,17 @@ void updateReservationMenu(RESERVATION* reservations, int& count)
 		cout << "Good Bye!" << endl;
 
 	default:
+	{
 		cout << "Please press a valid key!" << endl;
+		goto Retry1;
+		break;
+	}
 	}
 
 	updateReservation(reservations, index, NewData);
 }
+
+//|||=========================PRESENTATION LAYER=========================|||\\
 
 void deleteOrFixReservation(RESERVATION* reservations, int& count)
 {
@@ -401,11 +410,11 @@ void deleteOrFixReservation(RESERVATION* reservations, int& count)
 
 	int option3;
 	cin >> option3;
-
+	Retry:
 	switch (option3)
 	{
 	case 1:
-		DeleteReservation(reservations, count);
+		deleteReservationMenu(reservations, count);
 		break;
 
 	case 2:
@@ -416,7 +425,11 @@ void deleteOrFixReservation(RESERVATION* reservations, int& count)
 		cout << "Good Bye!" << endl;
 
 	default:
-		cout << "Please press a valid key!" << endl;
+		{
+			cout << "Please press a valid key!" << endl;
+			goto Retry;
+			break;
+		}
 	}
 
 }
@@ -457,8 +470,7 @@ void displayReservations(RESERVATION* reservations, LOGIN* login, int count)
 	}
 }
 
-
-bool AdministratorDisplay(TRAIN* trains, int& count, int& maxId, RESERVATION* reservations, LOGIN* login)
+bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reservations, LOGIN* login)
 {
 	cout << endl;
 	cout << "/=========================\\" << endl;
@@ -529,7 +541,7 @@ void AdministratorLogin(LOGIN* login, TRAIN* trains, int& count, int& maxId, RES
 	cout << "\\==============================================================/" << endl;
 	if (realPass == login->password)
 	{
-		AdministratorDisplay(trains, count, maxId, reservations,login);
+		AdministratorMenu(trains, count, maxId, reservations,login);
 		CheckSystem = true;
 	}
 	else
@@ -538,7 +550,7 @@ void AdministratorLogin(LOGIN* login, TRAIN* trains, int& count, int& maxId, RES
 
 }
 
-bool GuestDisplay(TRAIN * trains, int& count, RESERVATION* reservations, LOGIN* login, int& maxId)
+bool GuestMenu(TRAIN * trains, int& count, RESERVATION* reservations, LOGIN* login, int& maxId)
 {
 	cout << endl;
 	cout << "/====================\\" << endl;
@@ -560,7 +572,7 @@ bool GuestDisplay(TRAIN * trains, int& count, RESERVATION* reservations, LOGIN* 
 		break;
 
 	case 2:
-		makingReservation(reservations, login, count, maxId);
+		makeReservationMenu(reservations, login, count, maxId);
 		break;
 
 	case 3:
@@ -612,7 +624,6 @@ bool MainMenu(LOGIN* login, TRAIN* trains, int count, int maxId,RESERVATION* res
 	return true;
 }
 
-
 int main()
 {
 	TRAIN trains[55];
@@ -640,7 +651,7 @@ int main()
 
 	displayTimetable(trains, count);
 
-	AdministratorDisplay(trains, count, maxId,reservations,administratorlogin); 
+	AdministratorMenu(trains, count, maxId,reservations,administratorlogin); 
 
 	/*do
 	{
