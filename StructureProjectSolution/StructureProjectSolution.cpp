@@ -104,7 +104,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	cout << "Enter arrival location: "; cin >> newData.arriveTo;
 	cout << endl;
 
-	cout << "Enter Train class: "; cin >> newData.trainclass;
+	cout << "Enter Train class: "; cin >> newData.trainClass;
 	cout << "Enter number of seats: "; cin >> newData.seats;
 	cout << "\\=================================/" << endl;
 
@@ -115,6 +115,7 @@ void displayTimetable(TRAIN* trains, int count)
 {
 	for (int i = 0; i < count; i++)
 	{
+		cout << endl;
 		cout << "|||=============!!!=============|||" << endl;
 		//Departure Time
 		cout << "/========================\\" << endl;
@@ -136,7 +137,7 @@ void displayTimetable(TRAIN* trains, int count)
 		cout << "/============================\\" << endl;
 		cout << "Departure location: "; cout << trains[i].departFrom << endl;
 		cout << "Arrival location: "; cout << trains[i].arriveTo << endl;
-		cout << "Train class: "; cout << trains[i].trainclass << endl;
+		cout << "Train class: "; cout << trains[i].trainClass << endl;
 		cout << "Number of seats: "; cout << trains[i].seats << endl;
 		cout << "\\============================/" << endl;
 		cout << endl;

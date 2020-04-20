@@ -26,7 +26,7 @@ struct TRAIN {
 	string departFrom;
 	string arriveTo;
 	int seats;
-	char trainclass;
+	char trainClass;
 };
 
 struct LOGIN

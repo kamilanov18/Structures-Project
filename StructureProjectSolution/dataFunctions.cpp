@@ -45,36 +45,23 @@ void loadData(TRAIN* trains, int count)
 
     for (int i = 0; i < count; i++)
     {
-        data >> text;
-        trains[i].departTime.day = toInt(text);
-        data >> text;
-        trains[i].departTime.month = toInt(text);
-        data >> text;
-        trains[i].departTime.year = toInt(text);
-        data >> text;
-        trains[i].departTime.time.hours = toInt(text);
-        data >> text;
-        trains[i].departTime.time.minutes = toInt(text);
-        data >> text;
+        data >> trains[i].departTime.day;
+        data >> trains[i].departTime.month;
+        data >> trains[i].departTime.year;
+        data >> trains[i].departTime.time.hours;
+        data >> trains[i].departTime.time.minutes;
 
-        trains[i].arriveTime.day = toInt(text);
-        data >> text;
-        trains[i].arriveTime.month = toInt(text);
-        data >> text;
-        trains[i].arriveTime.year = toInt(text);
-        data >> text;
-        trains[i].arriveTime.time.hours = toInt(text);
-        data >> text;
-        trains[i].arriveTime.time.minutes = toInt(text);
-        data >> text;
+        data >> trains[i].arriveTime.day;
+        data >> trains[i].arriveTime.month;
+        data >> trains[i].arriveTime.year;
+        data >> trains[i].arriveTime.time.hours;
+        data >> trains[i].arriveTime.time.minutes;
 
-        trains[i].id = toInt(text);
-        data >> text;
-        trains[i].departFrom = text;
-        data >> text;
-        trains[i].arriveTo = text;
-        data >> text;
-        trains[i].seats = toInt(text);
+        data >> trains[i].id;
+        data >> trains[i].departFrom;
+        data >> trains[i].arriveTo;
+        data >> trains[i].seats;
+        data >> trains[i].trainClass;
         data >> text;
     }
     data.close();
@@ -93,7 +80,7 @@ void saveData(TRAIN* trains, int count)
         data << trains[i].departTime.year << endl;
         data << trains[i].departTime.time.hours << endl;
         data << trains[i].departTime.time.minutes << endl;
-        //
+      
         data << trains[i].arriveTime.day << endl;
         data << trains[i].arriveTime.month << endl;
         data << trains[i].arriveTime.year << endl;
@@ -104,6 +91,7 @@ void saveData(TRAIN* trains, int count)
         data << trains[i].departFrom << endl;
         data << trains[i].arriveTo << endl;
         data << trains[i].seats << endl;
+        data << trains[i].trainClass << endl;
         data << ":::" << endl;
 
     }
