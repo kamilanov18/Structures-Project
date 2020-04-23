@@ -692,9 +692,9 @@ int main()
 
 	AdministratorMenu(trains, count, maxId,reservations,administratorlogin);
 
-	/*do
+	/*/do
 	{
 		Cycler = MainMenu(Promenliva structure);     // Variable (Cycler) take MainMenu valuee
 	} while (Cycler == true);
-	*/
+	/*/
 }
