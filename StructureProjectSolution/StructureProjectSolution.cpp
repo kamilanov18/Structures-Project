@@ -22,10 +22,9 @@ int len(char a[100])
 
 int generateId(int& maxId)
 {
-	return maxId++;
+	maxId++;
+	return maxId;
 }
-
-
 
 int findElementByIdTRAIN(TRAIN* trains, int count, int searchID)
 {
@@ -347,6 +346,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	cout << "Enter number of seats: "; cin >> newData.seats;
 	cout << "\\=================================/" << endl;
 	cout << endl;
+
 	createTimetable(trains, count, maxId, newData);
 }
 
@@ -416,12 +416,12 @@ void deleteReservationMenu(RESERVATION* reservations, int& count)
 	deleteReservation(reservations, count, searchID); //== LOGIC LAYER ==
 }
 
-void deleteOrFixReservation(RESERVATION* reservations, int& count)
+void deleteOrFixReservation(RESERVATION* reservations, int& count, string username)
 {
 
 	int searchID;
 	cout << "/=====================================\\" << endl;
-	cout << "Hello, " << endl;
+	cout << "Hello, "; cout << username << "!" << endl;
 	cout << "Enter the ID of your reservation: " << endl; cin >> searchID;
 	cout << "1. Delete my reservation." << endl;
 	cout << "2. Fix my reservation." << endl;
@@ -459,11 +459,11 @@ void makeReservation(RESERVATION* reservations, int count, int maxId, RESERVATIO
 	count++;
 }
 
-void makeReservationMenu(RESERVATION* reservations, int count, int maxId)
+void makeReservationMenu(RESERVATION* reservations, int count, int maxId, string username)
 {
 	RESERVATION newData;
 	cout << "/====== RESERVATION DEPARTMENT ======\\" << endl;
-	cout << "Hello, " << endl;; cin >> newData.username;
+	cout << "Hello, "; cout << username << "!" << endl;
 	cout << "Enter the Train ID: "; cin >> reservations[count].reservedTrainID;
 	cout << "Enter the number of seats: "; cin >> reservations[count].reservedSeats;
 	cout << "\\====================================/" << endl;
@@ -477,7 +477,7 @@ bool GuestMenu(TRAIN* trains, int& count, RESERVATION* reservations, int& maxId,
 {
 	cout << endl;
 	cout << "/====================\\" << endl;
-	cout << "Welcome, "<<username<< endl;
+	cout << "Welcome, "<<username<< "!" << endl;
 	cout << "Choose option: " << endl;
 	cout << "1. View Timetable." << endl; 
 	cout << "2. Make Reservation." << endl;
@@ -495,11 +495,11 @@ bool GuestMenu(TRAIN* trains, int& count, RESERVATION* reservations, int& maxId,
 		break;
 
 	case 2:
-		makeReservationMenu(reservations, count, maxId);
+		makeReservationMenu(reservations, count, maxId, username);
 		break;
 
 	case 3:
-		deleteOrFixReservation(reservations, count);
+		deleteOrFixReservation(reservations, count, username);
 		break;
 
 	case 4:
@@ -528,15 +528,20 @@ bool GuestLogin(RESERVATION* reservations, int& count, int& maxId, bool CheckSys
 
 	for (int i = 0; i < count; i++)
 	{
-		if (username==reservations[i].username)
+		if (username != " ")
 		{
 			bool checkSystem3;
 			CheckSystem = true;
 			do
 			{
-				checkSystem3 = GuestMenu(trains, count, reservations, maxId,username);
+				checkSystem3 = GuestMenu(trains, count, reservations, maxId, username);
 			} while (checkSystem3);
 			
+		}
+		else 
+		{
+			CheckSystem = false;
+			return false;
 		}
 		
 	}
@@ -663,7 +668,7 @@ bool MainMenu(TRAIN* trains, int count, int maxId,RESERVATION* reservations, boo
 	//
 	retry:
 	cout << "/=======================\\" << endl;
-	cout << "Welcome!" << endl;
+	cout << "Welcome to Trainvago!" << endl;
 	cout << "Please select your role:" << endl;
 	cout << "1. Administrator" << endl;
 	cout << "2. Guest" << endl;
