@@ -37,6 +37,11 @@ void countElements(int& count)
     file.close();
 }
 
+void getMaxId(TRAIN* trains,int& maxId,int count)
+{
+    maxId = trains[count].id;
+}
+
 void loadData(TRAIN* trains, int count)
 {
     ifstream data;
