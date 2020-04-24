@@ -8,6 +8,16 @@
 
 using namespace std;
 
+void checkMinutes(int minutes)
+{
+    if (minutes < 10)
+    {
+        cout << "0" << minutes;
+    }
+    else
+        cout << minutes;
+}
+
 int toInt(string a)
 {
     int sum = 0;
@@ -101,4 +111,17 @@ void saveData(TRAIN* trains, int count)
 
     }
     data.close();
+}
+
+void WriteHTML(TRAIN* trains,int count)
+{
+    ofstream web;
+    web.open("web.html");
+    web << "<!DOCTYPE html><html><head>    <link href='https://fonts.googleapis.com/css2?family=Manrope&display=swap' rel='stylesheet'>    <link rel='stylesheet' type='text/css' href='style.css'>    <title>Timetable</title></head><body>    <div class='container'>        <img src='img/train.jpg' alt='train'>        <div class='Title'>TRAINVAGO</div>        <div class='UnderTitle'>Railway Administration System</div>        <hr class='hr'>        <div class='container2'>            <section id='section' class='Button'>                <a href='#a'><span></span>Scroll</a>            </section>        </div>    </div>    <div class='MainDiv'>        <div class='Timetable' id='a'>            <center>Timetable</center>        </div>";
+    for (int i = 0; i < count; i++)
+    {
+        web << "<div class='SubDiv'>            <div class='SubDiv1'>                <p id='inline'><b>"<<trains[count].departFrom<<" - "<< trains[count].arriveTo<<"</b>                    <p class='ID' id='inline'>ID: <span class='IDNumber'>"<< trains[count].id<<"</span></p>                </p>            </div>            <div calss='SubDiv2'>                <p class='Departure' id='inline'><b>Departure: </b>                    <p class='DepartDate' id='inline'>"<< trains[count].departTime.day<<"."<< trains[count].departTime.month<<"."<< trains[count].departTime.year<<" | "<< trains[count].departTime.time.hours<<":"<<trains[count].departTime.time.minutes<<"                       <p class='Seats' id='inline'>Seats: "<< trains[count].seats<<"</p>                    </p>                </p>                <p class='Arrival' id='inline'><b>Arrival: </b>                    <p class='ArriveDate' id='inline'>"<< trains[count].arriveTime.day<<"." << trains[count].arriveTime.month<<"." << trains[count].arriveTime.year<<" | "<<trains[count].arriveTime.time.hours<<":" << trains[count].arriveTime.time.minutes<<"</p>                </p>            </div>        </div>";
+    }
+    web << "</div></body></html>";
+    web.close();
 }

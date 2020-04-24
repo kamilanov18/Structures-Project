@@ -54,12 +54,14 @@ void createTimetable(TRAIN* trains, int& count, int& maxId, TRAIN newData)
 	trains[count] = newData;
 	count++;
 	saveData(trains, count);
+	WriteHTML(trains, count);
 }
 
 void updateTimetable(TRAIN* trains, int index, TRAIN newData,int count)
 {
 	trains[index] = newData;
 	saveData(trains, count);
+	WriteHTML(trains, count);
 }
 
 void deleteTimetable(TRAIN* trains, int& count, int searchID)
@@ -70,6 +72,7 @@ void deleteTimetable(TRAIN* trains, int& count, int searchID)
 	}
 	count--;
 	saveData(trains, count);
+	WriteHTML(trains, count);
 }
 
 void deleteReservation(RESERVATION* reservations, int& count, int searchID)
