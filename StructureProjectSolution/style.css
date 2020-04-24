@@ -3,11 +3,33 @@ body{
     background-color: #0f291e;
     font-family: 'Manrope', sans-serif;
 }
-
-.MainDiv {
-    margin-top: 7vw;
+#inline {
+    display:inline;
 }
-/* \/------------\/  \/-------------\/ */
+
+/* \/------------\/ Headings \/-------------\/ */
+
+img{
+    height: 100%;
+    width: 110%;
+    margin-top: -120px;
+    margin-left: -10px;
+    object-fit: cover;
+}
+
+.container {
+    position: relative;
+}
+
+.container2 {
+    top: 400px;
+    left: -10px;
+    position: absolute;
+    padding: 274px;
+    padding-right: 1800px;
+    max-height:5vw;
+}
+
 .Title{
     font-size: 150px;
     color: #fff;
@@ -35,101 +57,16 @@ body{
     position: absolute;
 }
 
-
-.SubDiv11 {
-    font-size: 100px;
-    color: #EFF6EE;
-    margin-left: 10vw;
-    margin-right: 10vw;
-    margin-bottom: 5vw;
-    padding: 10px;
-}
-
-.SubDiv {
-    font-size: 35px;
-    color: rgb(253, 236, 255);
-    background-color: rgb(16, 24, 32);
-    border: 2px solid #fff;
-    margin-left: 20vw;
-    margin-right: 20vw;
-    margin-top: 1.5vw;
-    padding: 10px;
-    border-radius: 30px;
-}
-
-.SubDiv1 {
-    margin: -10px;
-    margin-bottom: 20px;
-    padding-left: 20px;
-    padding-top: 35px;
-    background-color: #797979;
-    border-bottom: 2px #fff dashed;
-    border-top-left-radius: 27px;
-    border-top-right-radius: 27px;
-}
-
-.SubDiv2 {
-    padding-top: 30px;
-}
-
-.ID {
-    margin-left: 700px;
-}
-
-.IDNumber{
-    background-color: rgb(16, 24, 32);
-    border: 2px solid #fff;
-    border-radius: 10px;
-    padding: 5px;
-}
-#inline {
-    display:inline;
-}
-
-.Departure{
-    margin-bottom: -300px;
-}
-/* .Arrive{
-    
-} */
-
-.DepartDate{
-    margin-left: 35px;
-}
-.ArriveDate{
-    margin-left: 99px;
-}
-.Seats{
-    margin-left: 383px;
-}
-
-img{
-    height: 100%;
-    width: 110%;
-    margin-top: -120px;
-    margin-left: -10px;
-    object-fit: cover;
-}
-
-.container {
-    position: relative;
-}
-
 .hr {
     margin-top: -5px;
     margin-left: -8px;
     margin-right: -8px;
     border: 3px #fff solid;
 }
-.container2 {
-    top: 400px;
-    left: -10px;
-    position: absolute;
-    padding: 274px;
-    padding-right: 1800px;
-    max-height:5vw;
-}
 
+/* /\------------/\    Headings   /\-------------/\ */
+
+/* \/------------\/ Scroll Button \/-------------\/ */
 section {
     position: relative;
     width: 100%;
@@ -216,6 +153,82 @@ section {
       opacity: 0;
     }
 }
+/* /\------------/\ Scroll Button /\-------------/\ */
+
+/* \/------------\/ Timetable Box \/-------------\/ */
+
+.MainDiv {
+    margin-top: 7vw;
+}
+
+.Timetable {
+    font-size: 100px;
+    color: #EFF6EE;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    margin-bottom: 5vw;
+    padding: 10px;
+}
+
+.SubDiv {
+    font-size: 35px;
+    color: rgb(253, 236, 255);
+    background-color: rgb(16, 24, 32);
+    border: 2px solid #fff;
+    margin-left: 20vw;
+    margin-right: 20vw;
+    margin-top: 1.5vw;
+    padding: 10px;
+    border-radius: 30px;
+}
+
+.SubDiv1 {
+    margin: -10px;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    padding-top: 35px;
+    background-color: #797979;
+    border-bottom: 2px #fff dashed;
+    border-top-left-radius: 27px;
+    border-top-right-radius: 27px;
+}
+
+.SubDiv2 {
+    padding-top: 30px;
+}
+
+.ID {
+    margin-left: 700px;
+}
+
+.IDNumber{
+    background-color: rgb(16, 24, 32);
+    border: 2px solid #fff;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.Departure{
+    margin-bottom: -300px;
+}
+/* .Arrive{
+    
+} */
+
+.DepartDate{
+    margin-left: 35px;
+}
+.ArriveDate{
+    margin-left: 99px;
+}
+.Seats{
+    margin-left: 383px;
+}
+
+/* /\------------/\ Timetable Box /\-------------/\ */
+
+
+/* \/------------\/   Scrollbar   \/-------------\/ */
 
 ::-webkit-scrollbar {
     width: 10px;
@@ -229,3 +242,5 @@ section {
 ::-webkit-scrollbar-thumb:hover {
     background: rgb(103, 133, 104); 
 }
+
+/* /\------------/\   Scrollbar   /\-------------/\ */
