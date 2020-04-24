@@ -29,14 +29,9 @@ struct TRAIN {
 	char trainClass;
 };
 
-struct LOGIN
-{
-	string username;
-	string password;
-};
-
 struct RESERVATION
 {
+	string username;
 	int reservedTrainID;
 	int reservedSeats;
 	int reservedId;
