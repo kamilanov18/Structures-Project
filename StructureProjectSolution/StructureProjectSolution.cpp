@@ -355,18 +355,38 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	createTimetable(trains, count, maxId, newData);
 }
 
-
 //|||=========================RESERVATION=========================|||\\
 
-void displayReservations(RESERVATION* reservations, int count)
+void displayReservations(RESERVATION* reservations, int count,bool isAdmin,string username)
 {
-	for (int i = 0; i < count; i++)
+	if (isAdmin)
 	{
-		cout << "/=========================\\" << endl;
-		cout << "Reservator Name: "; cout << reservations[i].username << endl;
-		cout << "Train ID: "; cout << reservations[i].reservedTrainID << endl;
-		cout << "Train Seats: "; cout << reservations[i].reservedSeats << endl;
-		cout << "\\=========================/" << endl;
+		for (int i = 0; i < count; i++)
+		{
+			cout << "/=========================\\" << endl;
+			cout << "Reservator Name: "; cout << reservations[i].username << endl;
+			cout << "Train ID: "; cout << reservations[i].reservedTrainID << endl;
+			cout << "Train Seats: "; cout << reservations[i].reservedSeats << endl;
+			cout << "\\=========================/" << endl;
+		}
+	}
+	else
+	{
+		for (int i = 0; i < count; i++)
+		{
+			if (username == reservations[i].username)
+			{
+				cout << "/=========================\\" << endl;
+				cout << "Reservator Name: "; cout << reservations[i].username << endl;
+				cout << "Train ID: "; cout << reservations[i].reservedTrainID << endl;
+				cout << "Train Seats: "; cout << reservations[i].reservedSeats << endl;
+				cout << "\\=========================/" << endl;
+			}
+			else
+			{
+				cout << "There are no reservations under this username!";
+			}
+		}
 	}
 }
 
@@ -463,8 +483,8 @@ void makeReservation(RESERVATION* reservations, int count, int maxId, RESERVATIO
 	newData.username = username;
 	newData.reservedId = generateId(maxId);
 	reservations[count] = newData;
-	saveReservationData(reservations, count);
 	count++;
+	saveReservationData(reservations, count);
 	
 }
 
@@ -474,8 +494,8 @@ void makeReservationMenu(RESERVATION* reservations, int count, int maxId, string
 	cout << endl;
 	cout << "/====== RESERVATION DEPARTMENT ======\\" << endl;
 	cout << "Hello, "; cout << username << "!" << endl;
-	cout << "Enter the Train ID: "; cin >> reservations[count].reservedTrainID;
-	cout << "Enter the number of seats: "; cin >> reservations[count].reservedSeats;
+	cout << "Enter the Train ID: "; cin >> newData.reservedTrainID;
+	cout << "Enter the number of seats: "; cin >> newData.reservedSeats;
 	cout << "\\====================================/" << endl;
 	cout << endl;
 	makeReservation(reservations, count, maxId, newData,username);
@@ -493,7 +513,8 @@ bool GuestMenu(TRAIN* trains, int& count, RESERVATION* reservations, int& maxId,
 	cout << "1. View Timetable." << endl; 
 	cout << "2. Make Reservation." << endl;
 	cout << "3. Update/Delete Reservation." << endl;
-	cout << "4. Exit." << endl;
+	cout << "4. View Your Reservations."<<endl;
+	cout << "5. Exit." << endl;
 	cout << "\\==========================/" << endl;
 
 	int option3;
@@ -513,8 +534,10 @@ bool GuestMenu(TRAIN* trains, int& count, RESERVATION* reservations, int& maxId,
 	case 3:
 		deleteOrFixReservation(reservations, count, username);
 		break;
-
 	case 4:
+		displayReservations(reservations, count, false, username);
+		break;
+	case 5:
 		cout << "Good Bye!" << endl;
 		return false;
 		break;
@@ -539,27 +562,22 @@ bool GuestLogin(RESERVATION* reservations, int& count, int& maxId, bool CheckSys
 	cout << "Username: "; cin >> username;
 	cout << "\\==============================================================/" << endl;
 
-	
-
-	for (int i = 0; i < count; i++)
+	if (username != " ")
 	{
-		if (username != " ")
+		bool checkSystem3;
+		CheckSystem = true;
+		do
 		{
-			bool checkSystem3;
-			CheckSystem = true;
-			do
-			{
-				checkSystem3 = GuestMenu(trains, count, reservations, maxId, username);
-			} while (checkSystem3);
+			checkSystem3 = GuestMenu(trains, count, reservations, maxId, username);
+		} while (checkSystem3);
 			
-		}
-		else 
-		{
-			CheckSystem = false;
-			return false;
-		}
-		
 	}
+	else 
+	{
+		CheckSystem = false;
+		return false;
+	}
+		
 	return true;
 }
 
@@ -601,7 +619,7 @@ bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reser
 		break;
 
 	case 5:
-		displayReservations(reservations, count);
+		displayReservations(reservations, count,true,"");
 		break;
 
 	case 6: 
@@ -727,8 +745,8 @@ int main()
 
 	int maxId = 0;
 
-	countElements(trainCount);
-	countElements(reservationCount);
+	countTrainElements(trainCount);
+	countReservationElements(reservationCount);
 	loadTrainData(trains, trainCount);
 	loadReservationData(reservations, reservationCount);
 	

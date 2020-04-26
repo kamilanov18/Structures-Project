@@ -10,7 +10,8 @@ using namespace std;
 
 void checkMinutes(int minutes);
 int toInt(string a);
-void countElements(int& count);
+void countTrainElements(int& count);
+void countReservationElements(int& count);
 void getMaxId(TRAIN* trains, int& maxId, int count);
 void saveTrainData(TRAIN* trains, int count);
 void loadTrainData(TRAIN* trains, int count);

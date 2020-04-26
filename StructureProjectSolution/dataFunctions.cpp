@@ -33,7 +33,7 @@ int toInt(string a)
     return sum;
 }
 
-void countElements(int& count)
+void countTrainElements(int& count)
 {
 
     ifstream file;
@@ -47,9 +47,23 @@ void countElements(int& count)
     file.close();
 }
 
+void countReservationElements(int& count)
+{
+
+    ifstream file;
+    file.open("reservationData.txt");
+    string counterText;
+    while (getline(file, counterText))
+    {
+        if (counterText == ":::")
+            count++;
+    }
+    file.close();
+}
+
 void getMaxId(TRAIN* trains,int& maxId,int count)
 {
-    maxId = trains[count].id;
+    maxId = trains[count-1].id;
 }
 
 void loadTrainData(TRAIN* trains, int count)
@@ -152,7 +166,7 @@ void WriteHTML(TRAIN* trains,int count)
     web << "<!DOCTYPE html><html><head>    <link href='https://fonts.googleapis.com/css2?family=Manrope&display=swap' rel='stylesheet'>    <link rel='stylesheet' type='text/css' href='style.css'>    <title>Timetable</title></head><body>    <div class='container'>        <img src='img/train.jpg' alt='train'>        <div class='Title'>TRAINVAGO</div>        <div class='UnderTitle'>Railway Administration System</div>        <hr class='hr'>        <div class='container2'>            <section id='section' class='Button'>                <a href='#a'><span></span>Scroll</a>            </section>        </div>    </div>    <div class='MainDiv'>        <div class='Timetable' id='a'>            <center>Timetable</center>        </div>";
     for (int i = 0; i < count; i++)
     {
-        web << "<div class='SubDiv'>            <div class='SubDiv1'>                <p id='inline'><b>"<<trains[count].departFrom<<" - "<< trains[count].arriveTo<<"</b>                    <p class='ID' id='inline'>ID: <span class='IDNumber'>"<< trains[count].id<<"</span></p>                </p>            </div>            <div calss='SubDiv2'>                <p class='Departure' id='inline'><b>Departure: </b>                    <p class='DepartDate' id='inline'>"<< trains[count].departTime.day<<"."<< trains[count].departTime.month<<"."<< trains[count].departTime.year<<" | "<< trains[count].departTime.time.hours<<":"<<trains[count].departTime.time.minutes<<"                       <p class='Seats' id='inline'>Seats: "<< trains[count].seats<<"</p>                    </p>                </p>                <p class='Arrival' id='inline'><b>Arrival: </b>                    <p class='ArriveDate' id='inline'>"<< trains[count].arriveTime.day<<"." << trains[count].arriveTime.month<<"." << trains[count].arriveTime.year<<" | "<<trains[count].arriveTime.time.hours<<":" << trains[count].arriveTime.time.minutes<<"</p>                </p>            </div>        </div>";
+        web << "<div class='SubDiv'>            <div class='SubDiv1'>                <p id='inline'><b>"<<trains[i].departFrom<<" - "<< trains[i].arriveTo<<"</b>                    <p class='ID' id='inline'>ID: <span class='IDNumber'>"<< trains[i].id<<"</span></p>                </p>            </div>            <div calss='SubDiv2'>                <p class='Departure' id='inline'><b>Departure: </b>                    <p class='DepartDate' id='inline'>"<< trains[i].departTime.day<<"."<< trains[i].departTime.month<<"."<< trains[i].departTime.year<<" | "<< trains[i].departTime.time.hours<<":"<<trains[i].departTime.time.minutes<<"                       <p class='Seats' id='inline'>Seats: "<< trains[i].seats<<"</p>                    </p>                </p>                <p class='Arrival' id='inline'><b>Arrival: </b>                    <p class='ArriveDate' id='inline'>"<< trains[i].arriveTime.day<<"." << trains[i].arriveTime.month<<"." << trains[i].arriveTime.year<<" | "<<trains[i].arriveTime.time.hours<<":" << trains[i].arriveTime.time.minutes<<"</p>                </p>            </div>        </div>";
     }
     web << "</div></body></html>";
     web.close();

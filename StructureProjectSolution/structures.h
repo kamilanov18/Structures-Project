@@ -37,3 +37,5 @@ struct RESERVATION
 	int reservedId;
 };
 
+typedef RESERVATION PRESERVATION[100];
+
