@@ -52,7 +52,7 @@ void getMaxId(TRAIN* trains,int& maxId,int count)
     maxId = trains[count].id;
 }
 
-void loadData(TRAIN* trains, int count)
+void loadTrainData(TRAIN* trains, int count)
 {
     ifstream data;
     data.open("data.txt");
@@ -82,7 +82,7 @@ void loadData(TRAIN* trains, int count)
     data.close();
 }
 
-void saveData(TRAIN* trains, int count)
+void saveTrainData(TRAIN* trains, int count)
 {
 
     ofstream data;
@@ -111,6 +111,38 @@ void saveData(TRAIN* trains, int count)
 
     }
     data.close();
+}
+
+void saveReservationData(RESERVATION* reservations, int count)
+{
+    ofstream rData;
+    rData.open("reservationData.txt");
+    for (int i = 0; i < count; i++)
+    {
+        rData << reservations[i].username << endl;
+        rData << reservations[i].reservedSeats << endl;
+        rData << reservations[i].reservedTrainID<< endl;
+        rData << reservations[i].reservedId << endl;
+        rData << ":::" << endl;
+    }
+    rData.close();
+}
+
+void loadReservationData(RESERVATION* reservations, int count)
+{
+    ifstream rData;
+    rData.open("reservationData.txt");
+    string text;
+
+    for (int i = 0; i < count; i++)
+    {
+        rData >> reservations[i].username;
+        rData >> reservations[i].reservedSeats;
+        rData >> reservations[i].reservedTrainID;
+        rData >> reservations[i].reservedId;
+        rData >> text;
+    }
+    rData.close();
 }
 
 void WriteHTML(TRAIN* trains,int count)
