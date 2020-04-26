@@ -6,6 +6,7 @@
 #include "structures.h"
 #include "dataFunctions.h"
 
+
 using namespace std;
 
 //|||=========================LOGIC LAYER=========================|||\\
@@ -133,7 +134,6 @@ void displayTimetable(TRAIN* trains, int count)
 		cout << "/============================\\" << endl;
 		cout << "Departure location: "; cout << trains[i].departFrom << endl;
 		cout << "Arrival location: "; cout << trains[i].arriveTo << endl;
-		cout << "Train class: "; cout << trains[i].trainClass << endl;
 		cout << "Number of seats: "; cout << trains[i].seats << endl;
 		cout << "\\============================/" << endl;
 		cout << endl;
@@ -345,9 +345,6 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	cout << "/=================================\\" << endl;
 	cout << "Enter departure location: "; cin >> newData.departFrom;
 	cout << "Enter arrival location: "; cin >> newData.arriveTo;
-	cout << endl;
-
-	cout << "Enter Train class: "; cin >> newData.trainClass;
 	cout << "Enter number of seats: "; cin >> newData.seats;
 	cout << "\\=================================/" << endl;
 	cout << endl;
@@ -367,6 +364,7 @@ void displayReservations(RESERVATION* reservations, int count,bool isAdmin,strin
 			cout << "Reservator Name: "; cout << reservations[i].username << endl;
 			cout << "Train ID: "; cout << reservations[i].reservedTrainID << endl;
 			cout << "Train Seats: "; cout << reservations[i].reservedSeats << endl;
+			cout << "Reservation ID: "; cout << reservations[i].reservedId << endl;
 			cout << "\\=========================/" << endl;
 		}
 	}
@@ -381,10 +379,7 @@ void displayReservations(RESERVATION* reservations, int count,bool isAdmin,strin
 				cout << "Train ID: "; cout << reservations[i].reservedTrainID << endl;
 				cout << "Train Seats: "; cout << reservations[i].reservedSeats << endl;
 				cout << "\\=========================/" << endl;
-			}
-			else
-			{
-				cout << "There are no reservations under this username!";
+				cout << endl;
 			}
 		}
 	}
@@ -478,7 +473,7 @@ void deleteOrFixReservation(RESERVATION* reservations, int& count, string userna
 
 }
 
-void makeReservation(RESERVATION* reservations, int count, int maxId, RESERVATION newData,string username)
+void makeReservation(RESERVATION* reservations, int& count, int& maxId, RESERVATION newData,string username)
 {
 	newData.username = username;
 	newData.reservedId = generateId(maxId);
@@ -488,15 +483,16 @@ void makeReservation(RESERVATION* reservations, int count, int maxId, RESERVATIO
 	
 }
 
-void makeReservationMenu(RESERVATION* reservations, int count, int maxId, string username)
+void makeReservationMenu(RESERVATION* reservations, int& count, int& maxId, string username)
 {
 	RESERVATION newData;
 	cout << endl;
-	cout << "/====== RESERVATION DEPARTMENT ======\\" << endl;
-	cout << "Hello, "; cout << username << "!" << endl;
+	cout << "/================= RESERVATION DEPARTMENT =================\\" << endl;
+	cout << "Hello, "; cout << username << "! Please enter the ID of the train" << endl; 
+	cout << "and the number of seats you want to reserve!" << endl;
 	cout << "Enter the Train ID: "; cin >> newData.reservedTrainID;
 	cout << "Enter the number of seats: "; cin >> newData.reservedSeats;
-	cout << "\\====================================/" << endl;
+	cout << "\\==========================================================/" << endl;
 	cout << endl;
 	makeReservation(reservations, count, maxId, newData,username);
 }
@@ -696,7 +692,7 @@ bool AdministratorLogin(TRAIN* trains, int& count, int& maxId, RESERVATION* rese
 
 }
 
-bool MainMenu(TRAIN* trains, int count, int maxId,RESERVATION* reservations,int& reservationCount, bool CheckSystem)
+bool MainMenu(TRAIN* trains, int count, int& trainMaxId,int& reservationMaxId,RESERVATION* reservations,int& reservationCount, bool CheckSystem)
 {
 	//
 	retry:
@@ -715,11 +711,11 @@ bool MainMenu(TRAIN* trains, int count, int maxId,RESERVATION* reservations,int&
 	switch (option)
 	{
 	case 1:
-		AdministratorLogin(trains, count, maxId, reservations, CheckSystem);
+		AdministratorLogin(trains, count, trainMaxId, reservations, CheckSystem);
 		break; 
 
 	case 2: 
-		GuestLogin(reservations, reservationCount, maxId, CheckSystem, trains);
+		GuestLogin(reservations, reservationCount, reservationMaxId, CheckSystem, trains);
 		break; 
 
 	case 3: 
@@ -743,20 +739,22 @@ int main()
 	int trainCount = 0;
 	int reservationCount = 0;
 
-	int maxId = 0;
+	int trainMaxId = 0;
+	int reservationMaxId = 0;
 
 	countTrainElements(trainCount);
 	countReservationElements(reservationCount);
 	loadTrainData(trains, trainCount);
 	loadReservationData(reservations, reservationCount);
 	
-	getMaxId(trains, maxId, trainCount);
+	getTrainMaxId(trains, trainMaxId, trainCount);
+	getReservationMaxId(reservations, reservationMaxId, reservationCount);
 
 	bool Cycler; // Declaring variable of bool type (for the while cycle)
 	bool CheckSystem=false; // Declaring a variable of bool type(For checking | true / false)
 
 	do
 	{
-		Cycler = MainMenu(trains,trainCount,maxId,reservations,reservationCount,CheckSystem);
+		Cycler = MainMenu(trains,trainCount, trainMaxId, reservationMaxId,reservations,reservationCount,CheckSystem);
 	} while (Cycler == true);
 }

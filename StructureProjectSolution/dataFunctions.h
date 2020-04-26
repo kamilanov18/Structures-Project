@@ -8,11 +8,12 @@
 
 using namespace std;
 
-void checkMinutes(int minutes);
+string earlyTimeCorrectionCheck(int time);
 int toInt(string a);
 void countTrainElements(int& count);
 void countReservationElements(int& count);
-void getMaxId(TRAIN* trains, int& maxId, int count);
+void getTrainMaxId(TRAIN* trains, int& maxId, int count);
+void getReservationMaxId(RESERVATION* reservations, int& maxId, int count);
 void saveTrainData(TRAIN* trains, int count);
 void loadTrainData(TRAIN* trains, int count);
 void saveReservationData(RESERVATION* reservations, int count);
