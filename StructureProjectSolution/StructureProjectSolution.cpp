@@ -21,6 +21,11 @@ int len(char a[100])
 	return i;
 }
 
+void createNewPass(string& pass,string newPass)
+{
+	pass = newPass;
+}
+
 int generateId(int& maxId)
 {
 	maxId++;
@@ -316,36 +321,111 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	cout << endl;
 	cout << "/==============================\\" << endl;
 	cout << "Please enter the departure date." << endl;
-	cout << "Day: ";  cin >> newData.departTime.day;
-	cout << "month: "; cin >> newData.departTime.month;
+
+	retryDDay: 
+	cout << "Day: ";  cin >> newData.departTime.day; 
+	if (newData.departTime.day > 31 or newData.departTime.day < 0) 
+	{
+		cout << "Incorrect Input, please enter a legal value!" << endl; 
+		goto retryDDay;
+	}
+
+	retryDMonth: 
+	cout << "month: "; cin >> newData.departTime.month; 
+	if (newData.departTime.month > 12 or newData.departTime.month < 0) 
+	{ 
+		cout << "Incorrect Input, please enter a legal value!" << endl;
+		goto retryDMonth; 
+	}
+
+	retryDYear:
 	cout << "year: "; cin >> newData.departTime.year;
+	if (newData.departTime.year<2020)
+	{
+		cout << "Incorrect Input, please enter a legal value!" << endl;
+		goto retryDYear;
+	}
 	cout << endl;
 
 	cout << "Enter departure time." << endl;
+	retryDHours:
 	cout << "Hours: "; cin >> newData.departTime.time.hours;
+	if (newData.departTime.time.hours > 24 or newData.departTime.time.hours < 0)
+	{
+		cout << "Incorrect Input, please enter a legal value!" << endl;
+		goto retryDHours;
+	}
+
+	retryDMinutes:
 	cout << "Minutes: "; cin >> newData.departTime.time.minutes;
+	if (newData.departTime.time.minutes > 60 or newData.departTime.time.minutes < 0)
+	{
+		cout << "Incorrect Input, please enter a legal value!" << endl;
+		goto retryDMinutes;
+	}
 	cout << "\\===============================/" << endl;
 	cout << endl;
 
 	//Arrive time
 	cout << "/============================\\" << endl;
 	cout << "Please enter the arrival date." << endl;
+	retryADay:
 	cout << "Day: ";  cin >> newData.arriveTime.day;
+	if (newData.arriveTime.day > 31 or newData.arriveTime.day < 0)
+	{
+		cout << "Incorrect Input, please enter a legal value!" << endl;
+		goto retryADay;
+	}
+
+	retryAMonth:
 	cout << "month: "; cin >> newData.arriveTime.month;
+	if (newData.arriveTime.month > 12 or newData.arriveTime.month < 0)
+	{
+		cout << "Incorrect Input, please enter a legal value!" << endl;
+		goto retryAMonth;
+	}
+
+	retryAYear:
 	cout << "year: "; cin >> newData.arriveTime.year;
+	if (newData.arriveTime.year < 2020)
+	{
+		cout << "Incorrect Input, please enter a legal value!" << endl;
+		goto retryAYear;
+	}
 	cout << endl;
 
+	
 	cout << "Enter arrival time." << endl;
+	retryAHours:
 	cout << "Hours: "; cin >> newData.arriveTime.time.hours;
+	if (newData.arriveTime.time.hours > 60 or newData.arriveTime.time.hours < 0)
+	{
+		cout << "Incorrect Input, please enter a legal value!" << endl;
+		goto retryAHours;
+	}
+
+	retryAMinutes:
 	cout << "Minutes: "; cin >> newData.arriveTime.time.minutes;
+	if (newData.arriveTime.time.minutes > 60 or newData.arriveTime.time.minutes < 0)
+	{
+		cout << "Incorrect Input, please enter a legal value!" << endl;
+		goto retryAMinutes;
+	}
 	cout << "\\============================/" << endl;
 	cout << endl;
 
 	//Location data
 	cout << "/=================================\\" << endl;
+	retryDepart:
 	cout << "Enter departure location: "; cin >> newData.departFrom;
 	cout << "Enter arrival location: "; cin >> newData.arriveTo;
+	retrySeats:
 	cout << "Enter number of seats: "; cin >> newData.seats;
+	if (newData.seats < 0)
+	{
+		cout << "Incorrect Input, please enter a legal value!" << endl;
+		goto retrySeats;
+	}
 	cout << "\\=================================/" << endl;
 	cout << endl;
 
@@ -356,6 +436,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 
 void displayReservations(RESERVATION* reservations, int count,bool isAdmin,string username)
 {
+	bool hasReservations=false;
 	if (isAdmin)
 	{
 		for (int i = 0; i < count; i++)
@@ -370,6 +451,9 @@ void displayReservations(RESERVATION* reservations, int count,bool isAdmin,strin
 	}
 	else
 	{
+		cout << endl;
+		cout << "/=========YOUR RESERVATIONS=========\\" << endl;
+		cout << endl;
 		for (int i = 0; i < count; i++)
 		{
 			if (username == reservations[i].username)
@@ -380,8 +464,14 @@ void displayReservations(RESERVATION* reservations, int count,bool isAdmin,strin
 				cout << "Train Seats: "; cout << reservations[i].reservedSeats << endl;
 				cout << "\\=========================/" << endl;
 				cout << endl;
+				hasReservations=true;
 			}
 		}
+		if (hasReservations == false)
+			cout << "There are no reservations unser this username!" << endl;
+		cout << endl;
+		cout << "\\===================================/" << endl;
+		cout << endl;
 	}
 }
 
@@ -497,7 +587,6 @@ void makeReservationMenu(RESERVATION* reservations, int& count, int& maxId, stri
 	makeReservation(reservations, count, maxId, newData,username);
 }
 
-
 //|||=========================GUEST=========================|||\\
 
 bool GuestMenu(TRAIN* trains, int& count, RESERVATION* reservations, int& maxId,string username) //Guest 2
@@ -579,10 +668,17 @@ bool GuestLogin(RESERVATION* reservations, int& count, int& maxId, bool CheckSys
 
 //|||=========================Administrator=========================|||\\
 
-bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reservations)
+void createNewPassMenu(string& pass)
+{
+	string newPass;
+	cout << "Please enter the new password: "; cin >> newPass;
+	createNewPass(pass, newPass);
+}
+
+bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reservations,string& pass)
 {
 	cout << endl;
-	cout << "/=========================\\" << endl;
+	cout << "/=============================\\" << endl;
 	cout << "Welcome, Administrator!" << endl;
 	cout << "Choose option: " << endl;
 	cout << "1. Create Train Timetable." << endl;
@@ -590,8 +686,9 @@ bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reser
 	cout << "3. Delete Timetable." << endl;
 	cout << "4. Update Timetable." << endl; // In progress
 	cout << "5. Guest Reservations." << endl;
-	cout << "6. Exit." << endl;
-	cout << "\\=========================/" << endl;
+	cout << "6. Update Administrator Password."<<endl;
+	cout << "7. Exit." << endl;
+	cout << "\\=============================/" << endl;
 
 	int option2;
 	cout << "Your choice: ";  cin >> option2;
@@ -619,11 +716,15 @@ bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reser
 		break;
 
 	case 6: 
-		cout << "Good Bye!" << endl; 
-		return false; 
-
+		createNewPassMenu(pass);
+		break;
+	case 7:
+		cout << "Good Bye!" << endl;
+		return false;
+		break;
 	default:
 		cout << "Please press a valid key!" << endl; 
+		break;
 	}
 	return true;
 }
@@ -670,17 +771,17 @@ bool checkPassword(string realPass)
 	}
 }
 
-bool AdministratorLogin(TRAIN* trains, int& count, int& maxId, RESERVATION* reservations, bool CheckSystem)
+bool AdministratorLogin(TRAIN* trains, int& count, int& maxId, RESERVATION* reservations, bool CheckSystem,string& pass)
 {
 	
 	
-	if (checkPassword("adminadmin"))
+	if (checkPassword(pass))
 	{
 		bool checkSystem2;
 		CheckSystem = true;
 		do
 		{
-			checkSystem2 = AdministratorMenu(trains, count, maxId, reservations);
+			checkSystem2 = AdministratorMenu(trains, count, maxId, reservations,pass);
 		} while (checkSystem2);
 	}
 	else
@@ -692,7 +793,7 @@ bool AdministratorLogin(TRAIN* trains, int& count, int& maxId, RESERVATION* rese
 
 }
 
-bool MainMenu(TRAIN* trains, int count, int& trainMaxId,int& reservationMaxId,RESERVATION* reservations,int& reservationCount, bool CheckSystem)
+bool MainMenu(TRAIN* trains, int count, int& trainMaxId,int& reservationMaxId,RESERVATION* reservations,int& reservationCount, bool CheckSystem,string& pass)
 {
 	//
 	retry:
@@ -711,7 +812,7 @@ bool MainMenu(TRAIN* trains, int count, int& trainMaxId,int& reservationMaxId,RE
 	switch (option)
 	{
 	case 1:
-		AdministratorLogin(trains, count, trainMaxId, reservations, CheckSystem);
+		AdministratorLogin(trains, count, trainMaxId, reservations, CheckSystem,pass);
 		break; 
 
 	case 2: 
@@ -753,8 +854,10 @@ int main()
 	bool Cycler; // Declaring variable of bool type (for the while cycle)
 	bool CheckSystem=false; // Declaring a variable of bool type(For checking | true / false)
 
+	string pass = "adminadmin";
+
 	do
 	{
-		Cycler = MainMenu(trains,trainCount, trainMaxId, reservationMaxId,reservations,reservationCount,CheckSystem);
+		Cycler = MainMenu(trains,trainCount, trainMaxId, reservationMaxId,reservations,reservationCount,CheckSystem,pass);
 	} while (Cycler == true);
 }
