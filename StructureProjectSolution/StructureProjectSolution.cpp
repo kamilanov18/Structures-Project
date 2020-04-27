@@ -11,6 +11,31 @@ using namespace std;
 
 //|||=========================LOGIC LAYER=========================|||\\
 
+int readInt2()
+{
+	int a;
+	while (!(cin >> a))
+	{
+		cin.clear();
+		cin.ignore(INT_MAX, '\n');
+		cout << "Incorrect value, try again!" << endl;
+	}
+	return a;
+}
+
+int readInt()
+{
+	int a;
+	while (!(cin >> a))
+	{
+		cin.clear();
+		cin.ignore(INT_MAX, '\n');
+		cout << "Incorrect value, try again!" << endl;
+		cout << "Your choice: ";
+	}
+	return a;
+}
+
 int len(char a[100])
 {
 	int i = 0;
@@ -182,7 +207,7 @@ Retry1:
 	cout << "3. Location Data" << endl;
 	cout << "4. Exit" << endl;
 	cout << "\\====================================/" << endl;
-	cout << "Your choice: "; cin >> field;
+	cout << "Your choice: "; field = readInt();
 
 	switch (field)
 	{
@@ -197,7 +222,7 @@ Retry1:
 		cout << "5. Minutes" << endl;
 		cout << "6. Exit" << endl;
 
-		cout << "Your choice: "; cin >> field2;
+		cout << "Your choice: "; field2 = readInt();
 		switch (field2)
 		{
 		case 1:
@@ -271,7 +296,7 @@ Retry1:
 		cout << "5. Minutes" << endl;
 		cout << "6. Exit" << endl;
 
-		cout << "Your choice: "; cin >> field2;
+		cout << "Your choice: "; field2 = readInt();
 		switch (field2)
 		{
 		case 1:
@@ -343,7 +368,7 @@ Retry1:
 		cout << "3. Number of seats" << endl;
 		cout << "4.Exit" << endl;
 
-		cout << "Your choice: "; cin >> field2;
+		cout << "Your choice: "; field2 = readInt();
 		switch (field2)
 		{
 		case 1:
@@ -565,7 +590,7 @@ void updateReservationMenu(RESERVATION* reservations, int& count, int searchID)
 	cout << "\\===========================/" << endl;
 
 	int option4;
-	cout << "Your choice: "; cin >> option4;
+	cout << "Your choice: "; option4 = readInt();
 
 	switch (option4)
 	{
@@ -613,7 +638,7 @@ void deleteOrFixReservation(RESERVATION* reservations, int& count, string userna
 
 
 	int option3;
-	cout << "Your choice: ";  cin >> option3;
+	cout << "Your choice: "; option3 = readInt();
 
 	switch (option3)
 	{
@@ -678,7 +703,7 @@ bool GuestMenu(TRAIN* trains, int& count, RESERVATION* reservations, int& maxId,
 
 	int option3;
 	retry:
-	cout << "Your choice: ";  cin >> option3;
+	cout << "Your choice: "; option3 = readInt();
 
 	switch (option3)
 	{
@@ -766,7 +791,7 @@ bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reser
 	cout << "\\=============================/" << endl;
 
 	int option2;
-	cout << "Your choice: ";  cin >> option2;
+	cout << "Your choice: "; option2 = readInt();
 
 	switch (option2)
 	{
@@ -882,7 +907,7 @@ bool MainMenu(TRAIN* trains, int count, int& trainMaxId,int& reservationMaxId,RE
 	//
 
 	int option = 0; 
-	cout << "Your choice: ";  cin >> option;
+	cout << "Your choice: "; option = readInt();
 
 	switch (option)
 	{
