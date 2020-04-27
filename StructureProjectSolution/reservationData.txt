@@ -33,8 +33,3 @@ nasko_supata
 51
 7
 :::
-atanas
-2
-53
-8
-:::

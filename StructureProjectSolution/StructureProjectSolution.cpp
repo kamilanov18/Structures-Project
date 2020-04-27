@@ -221,15 +221,33 @@ Retry1:
 			break;
 
 		case 3:
+		retryDYear:
 			cout << "Enter the new year: "; cin >> newData.departTime.year;
+			if (newData.departTime.year < 2020)
+			{
+				cout << "Incorrect Input, please enter a legal value!" << endl;
+				goto retryDYear;
+			}
 			break;
 
 		case 4:
+		retryDHours:
 			cout << "Enter the new hours: "; cin >> newData.departTime.time.hours;
+			if (newData.departTime.time.hours > 24 or newData.departTime.time.hours < 0)
+			{
+				cout << "Incorrect Input, please enter a legal value!" << endl;
+				goto retryDHours;
+			}
 			break;
 
 		case 5:
+		retryDMinutes:
 			cout << "Enter the new minutes: "; cin >> newData.departTime.time.minutes;
+			if (newData.departTime.time.minutes > 60 or newData.departTime.time.minutes < 0)
+			{
+				cout << "Incorrect Input, please enter a legal value!" << endl;
+				goto retryDMinutes;
+			}
 			break;
 
 		case 6:
@@ -257,23 +275,53 @@ Retry1:
 		switch (field2)
 		{
 		case 1:
+		retryADay:
 			cout << "Enter the new day: "; cin >> newData.arriveTime.day;
+			if (newData.arriveTime.day > 31 or newData.arriveTime.day < 0)
+			{
+				cout << "Incorrect Input, please enter a legal value!" << endl;
+				goto retryADay;
+			}
 			break;
 
 		case 2:
+		retryAMonth:
 			cout << "Enter the new month: "; cin >> newData.arriveTime.month;
+			if (newData.arriveTime.month > 12 or newData.arriveTime.month < 0)
+			{
+				cout << "Incorrect Input, please enter a legal value!" << endl;
+				goto retryAMonth;
+			}
 			break;
 
 		case 3:
+		retryAYear:
 			cout << "Enter the new year: "; cin >> newData.arriveTime.year;
+			if (newData.arriveTime.year < 2020)
+			{
+				cout << "Incorrect Input, please enter a legal value!" << endl;
+				goto retryAYear;
+			}
 			break;
 
 		case 4:
+		retryAHours:
 			cout << "Enter the new hours: "; cin >> newData.arriveTime.time.hours;
+			if (newData.arriveTime.time.hours > 24 or newData.arriveTime.time.hours < 0)
+			{
+				cout << "Incorrect Input, please enter a legal value!" << endl;
+				goto retryAHours;
+			}
 			break;
 
 		case 5:
+		retryAMinutes:
 			cout << "Enter the new minutes: "; cin >> newData.arriveTime.time.minutes;
+			if (newData.arriveTime.time.minutes > 60 or newData.arriveTime.time.minutes < 0)
+			{
+				cout << "Incorrect Input, please enter a legal value!" << endl;
+				goto retryAMinutes;
+			}
 			break;
 
 		case 6:
@@ -307,7 +355,13 @@ Retry1:
 			break;
 
 		case 3:
+		retrySeats:
 			cout << "Enter the newnumber of seats: "; cin >> newData.seats;
+			if (newData.seats < 0)
+			{
+				cout << "Incorrect Input, please enter a legal value!" << endl;
+				goto retrySeats;
+			}
 
 		case 4:
 			cout << "Good Bye!" << endl;
@@ -637,6 +691,7 @@ bool GuestMenu(TRAIN* trains, int& count, RESERVATION* reservations, int& maxId,
 		break;
 
 	case 3:
+		displayReservations(reservations, count, false, username);
 		deleteOrFixReservation(reservations, count, username);
 		break;
 	case 4:
@@ -695,7 +750,7 @@ void createNewPassMenu(string& pass)
 	createNewPass(pass, newPass);
 }
 
-bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reservations,string& pass)
+bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reservations,string& pass, int reservationCount)
 {
 	cout << endl;
 	cout << "/=============================\\" << endl;
@@ -704,7 +759,7 @@ bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reser
 	cout << "1. Create Train Timetable." << endl;
 	cout << "2. View Timetable." << endl;
 	cout << "3. Delete Timetable." << endl;
-	cout << "4. Update Timetable." << endl; // In progress
+	cout << "4. Update Timetable." << endl;
 	cout << "5. Guest Reservations." << endl;
 	cout << "6. Update Administrator Password."<<endl;
 	cout << "7. Exit." << endl;
@@ -732,7 +787,7 @@ bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reser
 		break;
 
 	case 5:
-		displayReservations(reservations, count,true,"");
+		displayReservations(reservations, reservationCount,true,"");
 		break;
 
 	case 6: 
@@ -791,7 +846,7 @@ bool checkPassword(string realPass)
 	}
 }
 
-bool AdministratorLogin(TRAIN* trains, int& count, int& maxId, RESERVATION* reservations, bool CheckSystem,string& pass)
+bool AdministratorLogin(TRAIN* trains, int& count, int& maxId, RESERVATION* reservations, bool CheckSystem,string& pass, int reservationCount)
 {
 	
 	
@@ -801,7 +856,7 @@ bool AdministratorLogin(TRAIN* trains, int& count, int& maxId, RESERVATION* rese
 		CheckSystem = true;
 		do
 		{
-			checkSystem2 = AdministratorMenu(trains, count, maxId, reservations,pass);
+			checkSystem2 = AdministratorMenu(trains, count, maxId, reservations,pass, reservationCount);
 		} while (checkSystem2);
 	}
 	else
@@ -832,7 +887,7 @@ bool MainMenu(TRAIN* trains, int count, int& trainMaxId,int& reservationMaxId,RE
 	switch (option)
 	{
 	case 1:
-		AdministratorLogin(trains, count, trainMaxId, reservations, CheckSystem,pass);
+		AdministratorLogin(trains, count, trainMaxId, reservations, CheckSystem,pass, reservationCount);
 		break; 
 
 	case 2: 
