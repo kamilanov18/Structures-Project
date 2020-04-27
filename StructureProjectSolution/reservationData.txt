@@ -1,6 +1,6 @@
 kris
 1
-1
+11
 1
 :::
 nasko
@@ -32,4 +32,9 @@ nasko_supata
 2
 51
 7
+:::
+atanas
+2
+53
+8
 :::

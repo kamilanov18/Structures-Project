@@ -174,6 +174,7 @@ void updateTimetableMenu(TRAIN* trains, int& count) // Change Retry (function) w
 	newData = trains[index];
 
 Retry1:
+	cout << endl;
 	cout << "/====== Train Update Timetable ======\\" << endl;
 	cout << "Choose what you want to update: " << endl;
 	cout << "1. Departure Time." << endl;
@@ -181,12 +182,13 @@ Retry1:
 	cout << "3. Location Data" << endl;
 	cout << "4. Exit" << endl;
 	cout << "\\====================================/" << endl;
-	cin >> field;
+	cout << "Your choice: "; cin >> field;
 
 	switch (field)
 	{
 	case 1:
 	Retry2:
+		cout << endl;
 		cout << "Choose what you want to update: " << endl;
 		cout << "1. Day" << endl;
 		cout << "2. Month" << endl;
@@ -194,15 +196,28 @@ Retry1:
 		cout << "4. Hours" << endl;
 		cout << "5. Minutes" << endl;
 		cout << "6. Exit" << endl;
-		cin >> field2;
+
+		cout << "Your choice: "; cin >> field2;
 		switch (field2)
 		{
 		case 1:
+		retryDDay:
 			cout << "Enter the new day: "; cin >> newData.departTime.day;
+			if (newData.departTime.day > 31 or newData.departTime.day < 0)
+			{
+				cout << "Incorrect Input, please enter a legal value!" << endl;
+				goto retryDDay;
+			}
 			break;
 
 		case 2:
+		retryDMonth:
 			cout << "Enter the new month: "; cin >> newData.departTime.month;
+			if (newData.departTime.month > 12 or newData.departTime.month < 0)
+			{
+				cout << "Incorrect Input, please enter a legal value!" << endl;
+				goto retryDMonth;
+			}
 			break;
 
 		case 3:
@@ -229,6 +244,7 @@ Retry1:
 
 	case 2:
 	Retry3:
+		cout << endl;
 		cout << "Choose what you want to update: " << endl;
 		cout << "1. Day" << endl;
 		cout << "2. Month" << endl;
@@ -236,7 +252,8 @@ Retry1:
 		cout << "4. Hours" << endl;
 		cout << "5. Minutes" << endl;
 		cout << "6. Exit" << endl;
-		cin >> field2;
+
+		cout << "Your choice: "; cin >> field2;
 		switch (field2)
 		{
 		case 1:
@@ -271,12 +288,14 @@ Retry1:
 
 	case 3:
 	Retry4:
+		cout << endl;
 		cout << "Choose what you want to update: " << endl;
 		cout << "1. Departure Location." << endl;
 		cout << "2. Arrival Location" << endl;
 		cout << "3. Number of seats" << endl;
 		cout << "4.Exit" << endl;
-		cin >> field2;
+
+		cout << "Your choice: "; cin >> field2;
 		switch (field2)
 		{
 		case 1:
@@ -398,7 +417,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	cout << "Enter arrival time." << endl;
 	retryAHours:
 	cout << "Hours: "; cin >> newData.arriveTime.time.hours;
-	if (newData.arriveTime.time.hours > 60 or newData.arriveTime.time.hours < 0)
+	if (newData.arriveTime.time.hours > 24 or newData.arriveTime.time.hours < 0)
 	{
 		cout << "Incorrect Input, please enter a legal value!" << endl;
 		goto retryAHours;
@@ -462,6 +481,7 @@ void displayReservations(RESERVATION* reservations, int count,bool isAdmin,strin
 				cout << "Reservator Name: "; cout << reservations[i].username << endl;
 				cout << "Train ID: "; cout << reservations[i].reservedTrainID << endl;
 				cout << "Train Seats: "; cout << reservations[i].reservedSeats << endl;
+				cout << "Reservation ID: "; cout << reservations[i].reservedId << endl;
 				cout << "\\=========================/" << endl;
 				cout << endl;
 				hasReservations=true;
@@ -475,16 +495,14 @@ void displayReservations(RESERVATION* reservations, int count,bool isAdmin,strin
 	}
 }
 
-void updateReservationMenu(RESERVATION* reservations, int& count)
+void updateReservationMenu(RESERVATION* reservations, int& count, int searchID)
 {
 	RESERVATION NewData;
-
-	int searchID;
-	cout << "Enter the ID of the train you want to update: "; cin >> searchID;
 
 	int index = findElementByIdRESERVATION(reservations, count, searchID);
 	NewData = reservations[index];
 
+	cout << endl;
 	cout << "/===========================\\" << endl;
 	cout << "Choose what you want to fix: " << endl;
 	cout << "1. Train ID." << endl;
@@ -519,10 +537,8 @@ void updateReservationMenu(RESERVATION* reservations, int& count)
 	updateReservation(reservations, index, NewData,count); //==LOGIC LAYER==
 }
 
-void deleteReservationMenu(RESERVATION* reservations, int& count)
+void deleteReservationMenu(RESERVATION* reservations, int& count, int searchID)
 {
-	int searchID;
-	cout << "Enter the ID of the reservation you want to delete: "; cin >> searchID;
 	deleteReservation(reservations, count, searchID);
 
 }
@@ -531,24 +547,28 @@ void deleteOrFixReservation(RESERVATION* reservations, int& count, string userna
 {
 
 	int searchID;
+
+	cout << endl;
 	cout << "/=====================================\\" << endl;
 	cout << "Hello, "; cout << username << "!" << endl;
-	cout << "Enter the ID of your reservation: " << endl; cin >> searchID;
+	cout << "Enter the ID of your reservation: "; cin >> searchID;
 	cout << "1. Delete my reservation." << endl;
 	cout << "2. Fix my reservation." << endl;
 	cout << "3. Exit." << endl;
 	cout << "\\=====================================/" << endl;
 
+
 	int option3;
-	cin >> option3;
+	cout << "Your choice: ";  cin >> option3;
+
 	switch (option3)
 	{
 	case 1:
-		deleteReservationMenu(reservations, count);
+		deleteReservationMenu(reservations, count, searchID);
 		break;
 
 	case 2:
-		updateReservationMenu(reservations, count);
+		updateReservationMenu(reservations, count, searchID);
 		break;
 
 	case 3:
