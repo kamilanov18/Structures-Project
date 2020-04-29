@@ -11,7 +11,31 @@ using namespace std;
 
 //|||=========================LOGIC LAYER=========================|||\\
 
-int readInt2()
+bool checkReservationID(RESERVATION* reservations, int count, int id, string username)
+{
+	for (int i = 0; i < count; i++)
+	{
+		if (id == reservations[i].reservedId && username == reservations[i].username)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool checkTrainID(TRAIN* trains, int count, int id)
+{
+	for (int i = 0; i < count; i++)
+	{
+		if (id == trains[i].id)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+int readInt2(string s)
 {
 	int a;
 	while (!(cin >> a))
@@ -19,6 +43,7 @@ int readInt2()
 		cin.clear();
 		cin.ignore(INT_MAX, '\n');
 		cout << "Incorrect value, try again!" << endl;
+		cout << s;
 	}
 	return a;
 }
@@ -182,8 +207,27 @@ void displayTimetable(TRAIN* trains, int count)
 void deleteTimetableMenu(TRAIN* trains, int& count)
 {
 	int searchID;
-	cout << "Enter the ID of the train you want to delete: ";  cin >> searchID;
-	deleteTimetable(trains, count, searchID);
+
+	retry:
+	cout << "Enter the ID of the train you want to delete: "; searchID = readInt2("Enter the ID of the train you want to delete: ");
+	if (checkTrainID(trains, count, searchID) == true)
+	{
+		deleteTimetable(trains, count, searchID);
+		cout << endl;
+		cout << "/===================\\" << endl;
+		cout << "Successfully deleted!" << endl;
+		cout << "\\===================/" << endl;
+		cout << endl;
+	}
+	else
+	{
+		cout << endl;
+		cout << "/==================\\" << endl;
+		cout << "Invalid Train Id" << endl;
+		cout << "\\==================/" << endl;
+		cout << endl;
+		goto retry;
+	}		
 }
 
 void updateTimetableMenu(TRAIN* trains, int& count) // Change Retry (function) with Bool Variable !!!!
@@ -193,221 +237,236 @@ void updateTimetableMenu(TRAIN* trains, int& count) // Change Retry (function) w
 	int searchID;
 	int field, field2;
 
-	cout << "Enter the ID of the train: "; cin >> searchID;
+	Retry:
+	cout << "Enter the ID of the train: "; searchID = readInt2("Enter the ID of the train: ");
 
-	int index = findElementByIdTRAIN(trains, count, searchID);
-	newData = trains[index];
-
-Retry1:
-	cout << endl;
-	cout << "/====== Train Update Timetable ======\\" << endl;
-	cout << "Choose what you want to update: " << endl;
-	cout << "1. Departure Time." << endl;
-	cout << "2. Arrival Time." << endl;
-	cout << "3. Location Data" << endl;
-	cout << "4. Exit" << endl;
-	cout << "\\====================================/" << endl;
-	cout << "Your choice: "; field = readInt();
-
-	switch (field)
+	if (checkTrainID(trains, count, searchID) == true)
 	{
-	case 1:
-	Retry2:
-		cout << endl;
-		cout << "Choose what you want to update: " << endl;
-		cout << "1. Day" << endl;
-		cout << "2. Month" << endl;
-		cout << "3. Year" << endl;
-		cout << "4. Hours" << endl;
-		cout << "5. Minutes" << endl;
-		cout << "6. Exit" << endl;
+		int index = findElementByIdTRAIN(trains, count, searchID);
+		newData = trains[index];
 
-		cout << "Your choice: "; field2 = readInt();
-		switch (field2)
+	Retry1:
+		cout << endl;
+		cout << "/====== Train Update Timetable ======\\" << endl;
+		cout << "Choose what you want to update: " << endl;
+		cout << "1. Departure Time." << endl;
+		cout << "2. Arrival Time." << endl;
+		cout << "3. Location Data" << endl;
+		cout << "4. Exit" << endl;
+		cout << "\\====================================/" << endl;
+		cout << "Your choice: "; field = readInt();
+
+		switch (field)
 		{
 		case 1:
-		retryDDay:
-			cout << "Enter the new day: "; cin >> newData.departTime.day;
-			if (newData.departTime.day > 31 or newData.departTime.day < 0)
+		Retry2:
+			cout << endl;
+			cout << "Choose what you want to update: " << endl;
+			cout << "1. Day" << endl;
+			cout << "2. Month" << endl;
+			cout << "3. Year" << endl;
+			cout << "4. Hours" << endl;
+			cout << "5. Minutes" << endl;
+			cout << "6. Exit" << endl;
+
+			cout << "Your choice: "; field2 = readInt();
+			switch (field2)
 			{
-				cout << "Incorrect Input, please enter a legal value!" << endl;
-				goto retryDDay;
+			case 1:
+			retryDDay:
+				cout << "Enter the new day: "; newData.departTime.day = readInt2("Enter the new day: ");
+				if (newData.departTime.day > 31 or newData.departTime.day < 0)
+				{
+					cout << "Incorrect Input, please enter a legal value!" << endl;
+					goto retryDDay;
+				}
+				break;
+
+			case 2:
+			retryDMonth:
+				cout << "Enter the new month: "; newData.departTime.month = readInt2("Enter the new month: ");
+				if (newData.departTime.month > 12 or newData.departTime.month < 0)
+				{
+					cout << "Incorrect Input, please enter a legal value!" << endl;
+					goto retryDMonth;
+				}
+				break;
+
+			case 3:
+			retryDYear:
+				cout << "Enter the new year: "; newData.departTime.year = readInt2("Enter the new year: ");
+				if (newData.departTime.year < 2020)
+				{
+					cout << "Incorrect Input, please enter a legal value!" << endl;
+					goto retryDYear;
+				}
+				break;
+
+			case 4:
+			retryDHours:
+				cout << "Enter the new hours: "; newData.departTime.time.hours = readInt2("Enter the new hours: ");
+				if (newData.departTime.time.hours > 24 or newData.departTime.time.hours < 0)
+				{
+					cout << "Incorrect Input, please enter a legal value!" << endl;
+					goto retryDHours;
+				}
+				break;
+
+			case 5:
+			retryDMinutes:
+				cout << "Enter the new minutes: "; newData.departTime.time.minutes = readInt2("Enter the new minutes: ");
+				if (newData.departTime.time.minutes > 60 or newData.departTime.time.minutes < 0)
+				{
+					cout << "Incorrect Input, please enter a legal value!" << endl;
+					goto retryDMinutes;
+				}
+				break;
+
+			case 6:
+				cout << "Good Bye!" << endl;
+
+			default:
+				cout << "Incorrect Input, Please Try Again!";
+				goto Retry2;
+				break;
 			}
 			break;
 
 		case 2:
-		retryDMonth:
-			cout << "Enter the new month: "; cin >> newData.departTime.month;
-			if (newData.departTime.month > 12 or newData.departTime.month < 0)
+		Retry3:
+			cout << endl;
+			cout << "Choose what you want to update: " << endl;
+			cout << "1. Day" << endl;
+			cout << "2. Month" << endl;
+			cout << "3. Year" << endl;
+			cout << "4. Hours" << endl;
+			cout << "5. Minutes" << endl;
+			cout << "6. Exit" << endl;
+
+			cout << "Your choice: "; field2 = readInt();
+			switch (field2)
 			{
-				cout << "Incorrect Input, please enter a legal value!" << endl;
-				goto retryDMonth;
+			case 1:
+			retryADay:
+				cout << "Enter the new day: "; newData.arriveTime.day = readInt2("Enter the new day: ");
+				if (newData.arriveTime.day > 31 or newData.arriveTime.day < 0)
+				{
+					cout << "Incorrect Input, please enter a legal value!" << endl;
+					goto retryADay;
+				}
+				break;
+
+			case 2:
+			retryAMonth:
+				cout << "Enter the new month: "; newData.arriveTime.month = readInt2("Enter the new month: ");
+				if (newData.arriveTime.month > 12 or newData.arriveTime.month < 0)
+				{
+					cout << "Incorrect Input, please enter a legal value!" << endl;
+					goto retryAMonth;
+				}
+				break;
+
+			case 3:
+			retryAYear:
+				cout << "Enter the new year: "; newData.arriveTime.year = readInt2("Enter the new year: ");
+				if (newData.arriveTime.year < 2020)
+				{
+					cout << "Incorrect Input, please enter a legal value!" << endl;
+					goto retryAYear;
+				}
+				break;
+
+			case 4:
+			retryAHours:
+				cout << "Enter the new hours: "; newData.arriveTime.time.hours = readInt2("Enter the new hours: ");
+				if (newData.arriveTime.time.hours > 24 or newData.arriveTime.time.hours < 0)
+				{
+					cout << "Incorrect Input, please enter a legal value!" << endl;
+					goto retryAHours;
+				}
+				break;
+
+			case 5:
+			retryAMinutes:
+				cout << "Enter the new minutes: "; newData.arriveTime.time.minutes = readInt2("Enter the new minutes: ");
+				if (newData.arriveTime.time.minutes > 60 or newData.arriveTime.time.minutes < 0)
+				{
+					cout << "Incorrect Input, please enter a legal value!" << endl;
+					goto retryAMinutes;
+				}
+				break;
+
+			case 6:
+				cout << "Good Bye!" << endl;
+
+
+			default:
+				cout << "Incorrect Input, Please Try Again!";
+				goto Retry3;
+				break;
 			}
 			break;
 
 		case 3:
-		retryDYear:
-			cout << "Enter the new year: "; cin >> newData.departTime.year;
-			if (newData.departTime.year < 2020)
+		Retry4:
+			cout << endl;
+			cout << "Choose what you want to update: " << endl;
+			cout << "1. Departure Location." << endl;
+			cout << "2. Arrival Location" << endl;
+			cout << "3. Number of seats" << endl;
+			cout << "4.Exit" << endl;
+
+			cout << "Your choice: "; field2 = readInt();
+			switch (field2)
 			{
-				cout << "Incorrect Input, please enter a legal value!" << endl;
-				goto retryDYear;
+			case 1:
+				cout << "Enter the new departure location: "; cin >> newData.departFrom;
+				break;
+
+			case 2:
+				cout << "Enter the new arrival location: "; cin >> newData.arriveTo;
+				break;
+
+			case 3:
+			retrySeats:
+				cout << "Enter the newnumber of seats: "; newData.seats = readInt2("Enter the newnumber of seats: ");
+				if (newData.seats < 0)
+				{
+					cout << "Incorrect Input, please enter a legal value!" << endl;
+					goto retrySeats;
+				}
+
+			case 4:
+				cout << "Good Bye!" << endl;
+
+			default:
+				cout << "Incorrect Input, Please Try Again!";
+				goto Retry4;
+				break;
 			}
 			break;
 
 		case 4:
-		retryDHours:
-			cout << "Enter the new hours: "; cin >> newData.departTime.time.hours;
-			if (newData.departTime.time.hours > 24 or newData.departTime.time.hours < 0)
-			{
-				cout << "Incorrect Input, please enter a legal value!" << endl;
-				goto retryDHours;
-			}
-			break;
-
-		case 5:
-		retryDMinutes:
-			cout << "Enter the new minutes: "; cin >> newData.departTime.time.minutes;
-			if (newData.departTime.time.minutes > 60 or newData.departTime.time.minutes < 0)
-			{
-				cout << "Incorrect Input, please enter a legal value!" << endl;
-				goto retryDMinutes;
-			}
-			break;
-
-		case 6:
 			cout << "Good Bye!" << endl;
+			break;
 
 		default:
 			cout << "Incorrect Input, Please Try Again!";
-			goto Retry2;
+			goto Retry1;
 			break;
 		}
-		break;
 
-	case 2:
-	Retry3:
-		cout << endl;
-		cout << "Choose what you want to update: " << endl;
-		cout << "1. Day" << endl;
-		cout << "2. Month" << endl;
-		cout << "3. Year" << endl;
-		cout << "4. Hours" << endl;
-		cout << "5. Minutes" << endl;
-		cout << "6. Exit" << endl;
-
-		cout << "Your choice: "; field2 = readInt();
-		switch (field2)
-		{
-		case 1:
-		retryADay:
-			cout << "Enter the new day: "; cin >> newData.arriveTime.day;
-			if (newData.arriveTime.day > 31 or newData.arriveTime.day < 0)
-			{
-				cout << "Incorrect Input, please enter a legal value!" << endl;
-				goto retryADay;
-			}
-			break;
-
-		case 2:
-		retryAMonth:
-			cout << "Enter the new month: "; cin >> newData.arriveTime.month;
-			if (newData.arriveTime.month > 12 or newData.arriveTime.month < 0)
-			{
-				cout << "Incorrect Input, please enter a legal value!" << endl;
-				goto retryAMonth;
-			}
-			break;
-
-		case 3:
-		retryAYear:
-			cout << "Enter the new year: "; cin >> newData.arriveTime.year;
-			if (newData.arriveTime.year < 2020)
-			{
-				cout << "Incorrect Input, please enter a legal value!" << endl;
-				goto retryAYear;
-			}
-			break;
-
-		case 4:
-		retryAHours:
-			cout << "Enter the new hours: "; cin >> newData.arriveTime.time.hours;
-			if (newData.arriveTime.time.hours > 24 or newData.arriveTime.time.hours < 0)
-			{
-				cout << "Incorrect Input, please enter a legal value!" << endl;
-				goto retryAHours;
-			}
-			break;
-
-		case 5:
-		retryAMinutes:
-			cout << "Enter the new minutes: "; cin >> newData.arriveTime.time.minutes;
-			if (newData.arriveTime.time.minutes > 60 or newData.arriveTime.time.minutes < 0)
-			{
-				cout << "Incorrect Input, please enter a legal value!" << endl;
-				goto retryAMinutes;
-			}
-			break;
-
-		case 6:
-			cout << "Good Bye!" << endl;
-
-		default:
-			cout << "Incorrect Input, Please Try Again!";
-			goto Retry3;
-			break;
-		}
-		break;
-
-	case 3:
-	Retry4:
-		cout << endl;
-		cout << "Choose what you want to update: " << endl;
-		cout << "1. Departure Location." << endl;
-		cout << "2. Arrival Location" << endl;
-		cout << "3. Number of seats" << endl;
-		cout << "4.Exit" << endl;
-
-		cout << "Your choice: "; field2 = readInt();
-		switch (field2)
-		{
-		case 1:
-			cout << "Enter the new departure location: "; cin >> newData.departFrom;
-			break;
-
-		case 2:
-			cout << "Enter the new arrival location: "; cin >> newData.arriveTo;
-			break;
-
-		case 3:
-		retrySeats:
-			cout << "Enter the newnumber of seats: "; cin >> newData.seats;
-			if (newData.seats < 0)
-			{
-				cout << "Incorrect Input, please enter a legal value!" << endl;
-				goto retrySeats;
-			}
-
-		case 4:
-			cout << "Good Bye!" << endl;
-
-		default:
-			cout << "Incorrect Input, Please Try Again!";
-			goto Retry4;
-			break;
-		}
-		break;
-
-	case 4:
-		cout << "Good Bye!" << endl;
-
-	default:
-		cout << "Incorrect Input, Please Try Again!";
-		goto Retry1;
-		break;
+		updateTimetable(trains, index, newData, count);
 	}
-
-	updateTimetable(trains, index, newData,count);
+	else
+	{
+		cout << endl;
+		cout << "/==================\\" << endl;
+		cout << "Invalid Train Id" << endl;
+		cout << "\\==================/" << endl;
+		cout << endl;
+		goto Retry;
+	}
 
 }
 
@@ -421,7 +480,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	cout << "Please enter the departure date." << endl;
 
 	retryDDay: 
-	cout << "Day: ";  cin >> newData.departTime.day; 
+	cout << "Day: ";  newData.departTime.day = readInt2("Day: ");
 	if (newData.departTime.day > 31 or newData.departTime.day < 0) 
 	{
 		cout << "Incorrect Input, please enter a legal value!" << endl; 
@@ -429,7 +488,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	}
 
 	retryDMonth: 
-	cout << "month: "; cin >> newData.departTime.month; 
+	cout << "Month: "; newData.departTime.month = readInt2("Month: ");
 	if (newData.departTime.month > 12 or newData.departTime.month < 0) 
 	{ 
 		cout << "Incorrect Input, please enter a legal value!" << endl;
@@ -437,7 +496,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	}
 
 	retryDYear:
-	cout << "year: "; cin >> newData.departTime.year;
+	cout << "Year: "; newData.departTime.year = readInt2("Year: ");
 	if (newData.departTime.year<2020)
 	{
 		cout << "Incorrect Input, please enter a legal value!" << endl;
@@ -447,7 +506,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 
 	cout << "Enter departure time." << endl;
 	retryDHours:
-	cout << "Hours: "; cin >> newData.departTime.time.hours;
+	cout << "Hours: "; newData.departTime.time.hours = readInt2("Hours: ");
 	if (newData.departTime.time.hours > 24 or newData.departTime.time.hours < 0)
 	{
 		cout << "Incorrect Input, please enter a legal value!" << endl;
@@ -455,7 +514,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	}
 
 	retryDMinutes:
-	cout << "Minutes: "; cin >> newData.departTime.time.minutes;
+	cout << "Minutes: "; newData.departTime.time.minutes = readInt2("Minutes: ");
 	if (newData.departTime.time.minutes > 60 or newData.departTime.time.minutes < 0)
 	{
 		cout << "Incorrect Input, please enter a legal value!" << endl;
@@ -468,7 +527,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	cout << "/============================\\" << endl;
 	cout << "Please enter the arrival date." << endl;
 	retryADay:
-	cout << "Day: ";  cin >> newData.arriveTime.day;
+	cout << "Day: "; newData.arriveTime.day = readInt2("Day: ");
 	if (newData.arriveTime.day > 31 or newData.arriveTime.day < 0)
 	{
 		cout << "Incorrect Input, please enter a legal value!" << endl;
@@ -476,7 +535,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	}
 
 	retryAMonth:
-	cout << "month: "; cin >> newData.arriveTime.month;
+	cout << "Month: "; newData.arriveTime.month = readInt2("Month: ");
 	if (newData.arriveTime.month > 12 or newData.arriveTime.month < 0)
 	{
 		cout << "Incorrect Input, please enter a legal value!" << endl;
@@ -484,7 +543,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	}
 
 	retryAYear:
-	cout << "year: "; cin >> newData.arriveTime.year;
+	cout << "Year: "; newData.arriveTime.year = readInt2("Year: ");
 	if (newData.arriveTime.year < 2020)
 	{
 		cout << "Incorrect Input, please enter a legal value!" << endl;
@@ -495,7 +554,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	
 	cout << "Enter arrival time." << endl;
 	retryAHours:
-	cout << "Hours: "; cin >> newData.arriveTime.time.hours;
+	cout << "Hours: "; newData.arriveTime.time.hours = readInt2("Hours: ");
 	if (newData.arriveTime.time.hours > 24 or newData.arriveTime.time.hours < 0)
 	{
 		cout << "Incorrect Input, please enter a legal value!" << endl;
@@ -503,7 +562,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	}
 
 	retryAMinutes:
-	cout << "Minutes: "; cin >> newData.arriveTime.time.minutes;
+	cout << "Minutes: "; newData.arriveTime.time.minutes = readInt2("Minutes: ");
 	if (newData.arriveTime.time.minutes > 60 or newData.arriveTime.time.minutes < 0)
 	{
 		cout << "Incorrect Input, please enter a legal value!" << endl;
@@ -518,7 +577,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	cout << "Enter departure location: "; cin >> newData.departFrom;
 	cout << "Enter arrival location: "; cin >> newData.arriveTo;
 	retrySeats:
-	cout << "Enter number of seats: "; cin >> newData.seats;
+	cout << "Enter number of seats: "; newData.seats = readInt2("Enter number of seats: ");
 	if (newData.seats < 0)
 	{
 		cout << "Incorrect Input, please enter a legal value!" << endl;
@@ -595,15 +654,16 @@ void updateReservationMenu(RESERVATION* reservations, int& count, int searchID)
 	switch (option4)
 	{
 	case 1:
-		cout << "Train ID: "; cin >> NewData.reservedTrainID;
+		cout << "Train ID: "; NewData.reservedTrainID = readInt2("Train ID: ");
 		break;
 
 	case 2:
-		cout << "Number of seats: "; cin >> NewData.reservedSeats;
+		cout << "Number of seats: "; NewData.reservedSeats = readInt2("Number of seats: ");
 		break;
 
 	case 3:
 		cout << "Good Bye!" << endl;
+		break;
 
 	default:
 	{
@@ -630,36 +690,53 @@ void deleteOrFixReservation(RESERVATION* reservations, int& count, string userna
 	cout << endl;
 	cout << "/=====================================\\" << endl;
 	cout << "Hello, "; cout << username << "!" << endl;
-	cout << "Enter the ID of your reservation: "; cin >> searchID;
-	cout << "1. Delete my reservation." << endl;
-	cout << "2. Fix my reservation." << endl;
-	cout << "3. Exit." << endl;
+
+	Retry:
+	cout << "Enter the ID of your reservation: "; searchID = readInt2("Enter the ID of your reservation: ");
+	if (checkReservationID(reservations, count, searchID, username) == true)
+	{
+		cout << endl;
+		cout << "/=====================================\\" << endl;
+		cout << "1. Delete my reservation." << endl;
+		cout << "2. Fix my reservation." << endl;
+		cout << "3. Exit." << endl;
+		cout << "\\=====================================/" << endl;
+
+
+		int option3;
+		cout << "Your choice: "; option3 = readInt();
+
+		switch (option3)
+		{
+		case 1:
+			deleteReservationMenu(reservations, count, searchID);
+			break;
+
+		case 2:
+			updateReservationMenu(reservations, count, searchID);
+			break;
+
+		case 3:
+			cout << "Good Bye!" << endl;
+			break;
+
+		default:
+		{
+			cout << "Please press a valid key!" << endl;
+			break;
+		}
+		}
+	}
+	else 
+	{
+		cout << endl;
+		cout << "/==================\\" << endl;
+		cout << "Invalid Train Id" << endl;
+		cout << "\\==================/" << endl;
+		cout << endl;
+		goto Retry;
+	}
 	cout << "\\=====================================/" << endl;
-
-
-	int option3;
-	cout << "Your choice: "; option3 = readInt();
-
-	switch (option3)
-	{
-	case 1:
-		deleteReservationMenu(reservations, count, searchID);
-		break;
-
-	case 2:
-		updateReservationMenu(reservations, count, searchID);
-		break;
-
-	case 3:
-		cout << "Good Bye!" << endl;
-
-	default:
-	{
-		cout << "Please press a valid key!" << endl;
-		break;
-	}
-	}
-
 }
 
 void makeReservation(RESERVATION* reservations, int& count, int& maxId, RESERVATION newData,string username)
@@ -675,14 +752,16 @@ void makeReservation(RESERVATION* reservations, int& count, int& maxId, RESERVAT
 void makeReservationMenu(RESERVATION* reservations, int& count, int& maxId, string username)
 {
 	RESERVATION newData;
+
 	cout << endl;
 	cout << "/================= RESERVATION DEPARTMENT =================\\" << endl;
 	cout << "Hello, "; cout << username << "! Please enter the ID of the train" << endl; 
 	cout << "and the number of seats you want to reserve!" << endl;
-	cout << "Enter the Train ID: "; cin >> newData.reservedTrainID;
-	cout << "Enter the number of seats: "; cin >> newData.reservedSeats;
+	cout << "Enter the Train ID: "; newData.reservedTrainID = readInt2("Enter the Train ID: ");
+	cout << "Enter the number of seats: "; newData.reservedSeats = readInt2("Enter the number of seats: ");
 	cout << "\\==========================================================/" << endl;
 	cout << endl;
+
 	makeReservation(reservations, count, maxId, newData,username);
 }
 
@@ -696,8 +775,8 @@ bool GuestMenu(TRAIN* trains, int& count, RESERVATION* reservations, int& maxId,
 	cout << "Choose option: " << endl;
 	cout << "1. View Timetable." << endl; 
 	cout << "2. Make Reservation." << endl;
-	cout << "3. Update/Delete Reservation." << endl;
-	cout << "4. View Your Reservations."<<endl;
+	cout << "3. View Your Reservations" << endl;
+	cout << "4. Update/Delete Reservation."<<endl;
 	cout << "5. Exit." << endl;
 	cout << "\\==========================/" << endl;
 
@@ -717,11 +796,13 @@ bool GuestMenu(TRAIN* trains, int& count, RESERVATION* reservations, int& maxId,
 
 	case 3:
 		displayReservations(reservations, count, false, username);
-		deleteOrFixReservation(reservations, count, username);
 		break;
+
 	case 4:
 		displayReservations(reservations, count, false, username);
+		deleteOrFixReservation(reservations, count, username);
 		break;
+
 	case 5:
 		cout << "Good Bye!" << endl;
 		return false;
@@ -818,10 +899,12 @@ bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reser
 	case 6: 
 		createNewPassMenu(pass);
 		break;
+
 	case 7:
 		cout << "Good Bye!" << endl;
 		return false;
 		break;
+
 	default:
 		cout << "Please press a valid key!" << endl; 
 		break;
@@ -897,6 +980,7 @@ bool MainMenu(TRAIN* trains, int count, int& trainMaxId,int& reservationMaxId,RE
 {
 	//
 	retry:
+	cout << endl;
 	cout << "/=======================\\" << endl;
 	cout << "Welcome to Trainvago!" << endl;
 	cout << "Please select your role:" << endl;
@@ -922,6 +1006,7 @@ bool MainMenu(TRAIN* trains, int count, int& trainMaxId,int& reservationMaxId,RE
 	case 3: 
 		cout << "Good Bye!" << endl; 
 		return false; 
+		break;
 
 	default:
 		cout << "Please press a valid key!" << endl;
