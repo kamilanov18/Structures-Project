@@ -35,6 +35,3 @@ struct RESERVATION
 	int reservedSeats;
 	int reservedId;
 };
-
-typedef RESERVATION PRESERVATION[100];
-

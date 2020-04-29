@@ -5,80 +5,11 @@
 #include<cmath>
 #include "structures.h"
 #include "dataFunctions.h"
-
+#include "utilityFunctions.h"
 using namespace std;
 
-string earlyTimeCorrectionCheck(int time)
-{
-    string text = "0";
-    if (time < 10)
-    {
-        text += to_string(time);
-        return text;
-    }
-    else
-        return to_string(time);
-}
 
-int toInt(string a)
-{
-    int sum = 0;
-    int dig[100];
-    for (int i = 0; i < a.size(); i++)
-    {
-        dig[i] = (int)a[i] - 48;
-    }
-    for (int i = 0; i < a.size(); i++)
-    {
-        sum += dig[a.size() - 1 - i] * pow(10, i);
-    }
-    return sum;
-}
-
-void countTrainElements(int& count)
-{
-
-    ifstream file;
-    file.open("data.txt");
-    string counterText;
-    while (getline(file, counterText))
-    {
-        if (counterText == ":::")
-            count++;
-    }
-    file.close();
-}
-
-void countReservationElements(int& count)
-{
-
-    ifstream file;
-    file.open("reservationData.txt");
-    string counterText;
-    while (getline(file, counterText))
-    {
-        if (counterText == ":::")
-            count++;
-    }
-    file.close();
-}
-
-void getTrainMaxId(TRAIN* trains,int& maxId,int count)
-{
-    if (count == 0)
-        maxId = 50;
-    else
-        maxId = trains[count - 1].id;
-}
-
-void getReservationMaxId(RESERVATION* reservations, int& maxId, int count)
-{
-    if (count == 0)
-        maxId = 0;
-    else
-        maxId = reservations[count - 1].reservedId;
-}
-
+//|||==============================DATA LAYER==============================|||//
 void loadTrainData(TRAIN* trains, int count)
 {
     ifstream data;
@@ -182,3 +113,4 @@ void WriteHTML(TRAIN* trains,int count)
     web << "</div></body></html>";
     web.close();
 }
+//|||==============================DATA LAYER==============================|||//
