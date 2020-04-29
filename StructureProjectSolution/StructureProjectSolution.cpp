@@ -11,6 +11,16 @@ using namespace std;
 
 //|||=========================LOGIC LAYER=========================|||\\
 
+bool checkForExistingReservaitons(RESERVATION* reservations, int count,string username)
+{
+	for (int i = 0; i < count; i++)
+	{
+		if (reservations[i].username == username)
+			return true;
+	}
+	return false;
+}
+
 bool checkReservationID(RESERVATION* reservations, int count, int id, string username)
 {
 	for (int i = 0; i < count; i++)
@@ -621,7 +631,7 @@ void displayReservations(RESERVATION* reservations, int count,bool isAdmin,strin
 				cout << "Train Seats: "; cout << reservations[i].reservedSeats << endl;
 				cout << "Reservation ID: "; cout << reservations[i].reservedId << endl;
 				cout << "\\=========================/" << endl;
-				cout << endl;
+
 				hasReservations=true;
 			}
 		}
@@ -693,10 +703,10 @@ void deleteOrFixReservation(RESERVATION* reservations, int& count, string userna
 
 	Retry:
 	cout << "Enter the ID of your reservation: "; searchID = readInt2("Enter the ID of your reservation: ");
-	if (checkReservationID(reservations, count, searchID, username) == true)
+	if (checkReservationID(reservations, count, searchID, username))
 	{
 		cout << endl;
-		cout << "/=====================================\\" << endl;
+		cout << "|=====================================|" << endl;
 		cout << "1. Delete my reservation." << endl;
 		cout << "2. Fix my reservation." << endl;
 		cout << "3. Exit." << endl;
@@ -736,7 +746,6 @@ void deleteOrFixReservation(RESERVATION* reservations, int& count, string userna
 		cout << endl;
 		goto Retry;
 	}
-	cout << "\\=====================================/" << endl;
 }
 
 void makeReservation(RESERVATION* reservations, int& count, int& maxId, RESERVATION newData,string username)
@@ -767,7 +776,7 @@ void makeReservationMenu(RESERVATION* reservations, int& count, int& maxId, stri
 
 //|||=========================GUEST=========================|||\\
 
-bool GuestMenu(TRAIN* trains, int& count, RESERVATION* reservations, int& maxId,string username) //Guest 2
+bool GuestMenu(TRAIN* trains, int& count, RESERVATION* reservations, int& maxId,string username, int trainCount) //Guest 2
 {
 	cout << endl;
 	cout << "/==========================\\" << endl;
@@ -787,7 +796,7 @@ bool GuestMenu(TRAIN* trains, int& count, RESERVATION* reservations, int& maxId,
 	switch (option3)
 	{
 	case 1:
-		displayTimetable(trains, count);
+		displayTimetable(trains, trainCount);
 		break;
 
 	case 2:
@@ -799,8 +808,15 @@ bool GuestMenu(TRAIN* trains, int& count, RESERVATION* reservations, int& maxId,
 		break;
 
 	case 4:
-		displayReservations(reservations, count, false, username);
-		deleteOrFixReservation(reservations, count, username);
+		if (checkForExistingReservaitons(reservations, count, username))
+		{
+			displayReservations(reservations, count, false, username);
+			deleteOrFixReservation(reservations, count, username);
+		}
+		else
+		{
+			cout << "There are no reservaitons under this username!";
+		}
 		break;
 
 	case 5:
@@ -816,7 +832,7 @@ bool GuestMenu(TRAIN* trains, int& count, RESERVATION* reservations, int& maxId,
 	return true;
 }
 
-bool GuestLogin(RESERVATION* reservations, int& count, int& maxId, bool CheckSystem, TRAIN* trains) // Guest 1
+bool GuestLogin(RESERVATION* reservations, int& count, int& maxId, bool CheckSystem, TRAIN* trains, int trainCount) // Guest 1
 {
 	string username;
 
@@ -834,7 +850,7 @@ bool GuestLogin(RESERVATION* reservations, int& count, int& maxId, bool CheckSys
 		CheckSystem = true;
 		do
 		{
-			checkSystem3 = GuestMenu(trains, count, reservations, maxId, username);
+			checkSystem3 = GuestMenu(trains, count, reservations, maxId, username, trainCount);
 		} while (checkSystem3);
 			
 	}
@@ -1000,7 +1016,7 @@ bool MainMenu(TRAIN* trains, int count, int& trainMaxId,int& reservationMaxId,RE
 		break; 
 
 	case 2: 
-		GuestLogin(reservations, reservationCount, reservationMaxId, CheckSystem, trains);
+		GuestLogin(reservations, reservationCount, reservationMaxId, CheckSystem, trains,count);
 		break; 
 
 	case 3: 
