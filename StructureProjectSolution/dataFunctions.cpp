@@ -15,7 +15,7 @@ void loadTrainData(TRAIN* trains, int count)
 {
     //Open the data.txt file
     ifstream data;
-    data.open("data.txt");
+    data.open("..\\data\\data.txt");
     string text;
 
     //Loop trough all of the elements in the file and write them to the trains array
@@ -47,7 +47,7 @@ void saveTrainData(TRAIN* trains, int count)
 {
     //Open the file
     ofstream data;
-    data.open("data.txt");
+    data.open("..\\data\\data.txt");
 
     //Loop trough every element in the array and write each piece of data on a new line
     for (int i = 0; i < count; i++)
@@ -79,7 +79,7 @@ void saveReservationData(RESERVATION* reservations, int count)
 {
     //Open the reservationData.txt file
     ofstream rData;
-    rData.open("reservationData.txt");
+    rData.open("..\\data\\reservationData.txt");
     //Loop through all of the elements in the reservation array
     for (int i = 0; i < count; i++)
     {
@@ -97,7 +97,7 @@ void loadReservationData(RESERVATION* reservations, int count)
 {
     //Open the reservationData.txt file
     ifstream rData;
-    rData.open("reservationData.txt");
+    rData.open("..\\data\\reservationData.txt");
     string text;
 
     //Loop through all of the elements in the data file
@@ -117,7 +117,7 @@ void WriteHTML(TRAIN* trains,int count)
 {
     //Open the web.html file
     ofstream web;
-    web.open("web.html");
+    web.open("..\\HTMLCSS\\web.html");
 
     //Add the first half of the HTML code, the css is written in another external file
     web << "<!DOCTYPE html><html><head>    <link href='https://fonts.googleapis.com/css2?family=Manrope&display=swap' rel='stylesheet'>    <link rel='stylesheet' type='text/css' href='style.css'>    <title>Timetable</title></head><body>    <div class='container'>        <img src='img/train.jpg' alt='train'>        <div class='Title'>TRAINVAGO</div>        <div class='UnderTitle'>Railway Administration System</div>        <hr class='hr'>        <div class='container2'>            <section id='section' class='Button'>                <a href='#a'><span></span>Scroll</a>            </section>        </div>    </div>    <div class='MainDiv'>        <div class='Timetable' id='a'>            <center>Timetable</center>        </div>";

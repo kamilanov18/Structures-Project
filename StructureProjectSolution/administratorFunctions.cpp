@@ -117,7 +117,7 @@ void displayTimetable(TRAIN* trains, int count)
 		cout << endl;
 	}
 	//open web.html in the user's browser
-	system("web.html");
+	system("..\\HTMLCSS\\web.html");
 }
 
 //This is the menu function of the deleteTimetable function

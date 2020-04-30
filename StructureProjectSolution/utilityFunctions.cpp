@@ -244,7 +244,7 @@ void countTrainElements(int& count)
 {
 	//Open the data.txt file
 	ifstream file;
-	file.open("data.txt");
+	file.open("..\\data\\data.txt");
 	string counterText;
 	//Loop trough each line of the file
 	while (getline(file, counterText))
@@ -261,7 +261,7 @@ void countReservationElements(int& count)
 {
 	//Open the reservationData.txt file
 	ifstream file;
-	file.open("reservationData.txt");
+	file.open("..\\data\\reservationData.txt");
 	string counterText;
 	//Loop trough all of it's lines
 	while (getline(file, counterText))
