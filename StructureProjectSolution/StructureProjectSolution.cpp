@@ -10,7 +10,6 @@
 #include "utilityFunctions.h"
 using namespace std;
 
-
 int main()
 {
 	TRAIN trains[50];
