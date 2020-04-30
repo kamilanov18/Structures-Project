@@ -11,34 +11,51 @@
 
 using namespace std;
 //|||==============================LOGIC LAYER==============================|||//
+//This function creates a Timtable in the trains array
 void createTimetable(TRAIN* trains, int& count, int& maxId, TRAIN newData)
 {
+	//generate a unique ID using generateId
 	newData.id = generateId(maxId);
+	//Add the new data to the trains array
 	trains[count] = newData;
+	//Increment the count
 	count++;
+	//Save the data in the data.txt file and write it in web.html
 	saveTrainData(trains, count);
 	WriteHTML(trains, count);
 }
+
+//This function updates the timetable
 void updateTimetable(TRAIN* trains, int index, TRAIN newData, int count)
 {
+	//replace the old data with the new in the index position
 	trains[index] = newData;
+	//Save the data in the data.txt file and write it in web.html
 	saveTrainData(trains, count);
 	WriteHTML(trains, count);
 }
+
+//This function deletes the specified element in the trains array
 void deleteTimetable(TRAIN* trains, int& count, int searchID)
 {
+	//count form the position of the element we want to delete
 	for (int i = findElementByIdTRAIN(trains, count, searchID); i < count - 1; i++)
 	{
+		//shift every element to the right, until the unwated element is in last index position
 		trains[i] = trains[i + 1];
 	}
+	//Decrease the value of count, because of thedeleted element
 	count--;
+
+	//Save the data in the data.txt file and write it in web.html
 	saveTrainData(trains, count);
 	WriteHTML(trains, count);
 }
+
+//This function allowes the administarot to login, if they pass the password check
 bool AdministratorLogin(TRAIN* trains, int& count, int& maxId, RESERVATION* reservations, bool CheckSystem, string& pass, int reservationCount)
 {
-
-
+	//If the password is correct allow the administrator to acces the menu
 	if (checkPassword(pass))
 	{
 		bool checkSystem2;
@@ -48,7 +65,7 @@ bool AdministratorLogin(TRAIN* trains, int& count, int& maxId, RESERVATION* rese
 			checkSystem2 = AdministratorMenu(trains, count, maxId, reservations, pass, reservationCount);
 		} while (checkSystem2);
 	}
-	else
+	else //Otherwise return the user to the main menu
 	{
 		CheckSystem = false;
 		return false;
@@ -59,8 +76,10 @@ bool AdministratorLogin(TRAIN* trains, int& count, int& maxId, RESERVATION* rese
 //|||==============================LOGIC LAYER==============================|||//
 
 //|||==============================PRESENTATION LAYER==============================|||//
+//This function displays the timetables and opens we web.html file
 void displayTimetable(TRAIN* trains, int count)
 {
+	//Loop through each element of the trains array and display them
 	for (int i = 0; i < count; i++)
 	{
 		cout << endl;
@@ -97,14 +116,18 @@ void displayTimetable(TRAIN* trains, int count)
 		cout << "|||=============!!!=============|||" << endl;
 		cout << endl;
 	}
+	//open web.html in the user's browser
 	system("web.html");
 }
+
+//This is the menu function of the deleteTimetable function
 void deleteTimetableMenu(TRAIN* trains, int& count)
 {
 	int searchID;
 
 retry:
 	cout << "Enter the ID of the train you want to delete: "; searchID = readInt2("Enter the ID of the train you want to delete: ");
+	//Check if the entered ID even exists, if so delete the element
 	if (checkTrainID(trains, count, searchID) == true)
 	{
 		deleteTimetable(trains, count, searchID);
@@ -114,7 +137,7 @@ retry:
 		cout << "\\===================/" << endl;
 		cout << endl;
 	}
-	else
+	else //Otherwise let the user know that this ID doesnt exist
 	{
 		cout << endl;
 		cout << "/==================\\" << endl;
@@ -124,6 +147,8 @@ retry:
 		goto retry;
 	}
 }
+
+//This is the Menu for the updateTimetable function
 void updateTimetableMenu(TRAIN* trains, int& count) // Change Retry (function) with Bool Variable !!!!
 {
 	TRAIN newData;
@@ -132,12 +157,14 @@ void updateTimetableMenu(TRAIN* trains, int& count) // Change Retry (function) w
 	int field, field2;
 
 Retry:
-	cout << "Enter the ID of the train: "; searchID = readInt2("Enter the ID of the train: ");
-
+	cout << "Enter the ID of the train: "; searchID = readInt2("Enter the ID of the train: "); 
+	//Check if the train ID even exists, if so allow the user to update information
 	if (checkTrainID(trains, count, searchID) == true)
 	{
+		//Get the index of the element we want to update using the findElementByIdTRAIN function
 		int index = findElementByIdTRAIN(trains, count, searchID);
-		newData = trains[index];
+		//Copy the current element standing in the desired index position in hte newData variable
+		newData = trains[index]; 
 
 	Retry1:
 		cout << endl;
@@ -148,6 +175,7 @@ Retry:
 		cout << "3. Location Data" << endl;
 		cout << "4. Exit" << endl;
 		cout << "\\====================================/" << endl;
+		//prompt the user for input
 		cout << "Your choice: "; field = readInt();
 
 		switch (field)
@@ -164,6 +192,8 @@ Retry:
 			cout << "6. Exit" << endl;
 
 			cout << "Your choice: "; field2 = readInt();
+			//Now begins a series of if statements with the purpose of detecting invalid information, like 13 months or 56 days or 67 minutes
+			//If there is invalid information, the user is returned to the input prompt to enter the info again
 			switch (field2)
 			{
 			case 1:
@@ -352,7 +382,7 @@ Retry:
 
 		updateTimetable(trains, index, newData, count);
 	}
-	else
+	else //Otherwise if the ID of the train doesn't exist let the user know
 	{
 		cout << endl;
 		cout << "/==================\\" << endl;
@@ -363,6 +393,8 @@ Retry:
 	}
 
 }
+
+//This is the Menu function for the createTimetable function
 void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 {
 	TRAIN newData;
@@ -371,6 +403,7 @@ void createTimetableMenu(TRAIN* trains, int& count, int& maxId)
 	cout << endl;
 	cout << "/==============================\\" << endl;
 	cout << "Please enter the departure date." << endl;
+	//Prompt the user for input and perform a series of checks to see wether the info theu entered is lega() example: 13 months, 69 days, 140 hours)
 
 retryDDay:
 	cout << "Day: ";  newData.departTime.day = readInt2("Day: ");
@@ -479,10 +512,14 @@ retrySeats:
 	cout << "\\=================================/" << endl;
 	cout << endl;
 
+	//Create the timetable
 	createTimetable(trains, count, maxId, newData);
 }
+
+//This function displays the administartor menu
 bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reservations, string& pass, int reservationCount)
 {
+	//Display the Menu
 	cout << endl;
 	cout << "/=============================\\" << endl;
 	cout << "Welcome, Administrator!" << endl;
@@ -498,6 +535,7 @@ bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reser
 
 	int option2;
 	cout << "Your choice: "; option2 = readInt();
+	//prompt the user for input
 
 	switch (option2)
 	{
@@ -536,9 +574,11 @@ bool AdministratorMenu(TRAIN* trains, int& count, int& maxId, RESERVATION* reser
 	}
 	return true;
 }
+
+//This is the Main menu, here all of the functions are called and used
 bool MainMenu(TRAIN* trains, int count, int& trainMaxId, int& reservationMaxId, RESERVATION* reservations, int& reservationCount, bool CheckSystem, string& pass)
 {
-	//
+	//Displat the menu
 retry:
 	cout << endl;
 	cout << "/=======================\\" << endl;
@@ -552,6 +592,7 @@ retry:
 
 	int option = 0;
 	cout << "Your choice: "; option = readInt();
+	//Prompt the user for input
 
 	switch (option)
 	{
